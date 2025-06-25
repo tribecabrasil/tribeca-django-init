@@ -23,16 +23,18 @@ def test_cli_basic_flow(temp_project_dir, monkeypatch):
     inputs = [
         "1",  # Reuse or create venv
         "1",  # Install dependencies
+        "",   # Django version (default)
         "1",  # Initialize git
         "1",  # Create Django project
         "1",  # Create settings package
+        # Only after settings prompt is complete, send app name:
         "users",  # App name
         "1",  # Create app
         "1"   # Apply migrations
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
-    result = runner.invoke(main, input="\n".join(inputs))
-    assert result.exit_code == 0
+    result = runner.invoke(main, input="\n".join(inputs) + "\n")
+    assert result.exit_code == 0, f'Output:\n{result.output}'
     # Check if key files/folders were created
     assert (temp_project_dir / ".venv").exists() or (temp_project_dir / "manage.py").exists()
     assert (temp_project_dir / "README.md").exists()
@@ -50,13 +52,14 @@ def test_cli_skip_steps(temp_project_dir, monkeypatch):
         "2",  # Skip git
         "2",  # Skip Django project
         "2",  # Skip settings
+        # Only after settings prompt is complete, send app name:
         "users",  # App name
         "2",  # Skip app
         "2"   # Skip migrations
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
-    result = runner.invoke(main, input="\n".join(inputs))
-    assert result.exit_code == 0
+    result = runner.invoke(main, input="\n".join(inputs) + "\n")
+    assert result.exit_code == 0, f'Output:\n{result.output}'
     # README may not exist if all steps skipped
     # But project should not crash
 
@@ -65,9 +68,18 @@ def test_cli_custom_app_name(temp_project_dir, monkeypatch):
     runner = CliRunner()
     app_name = "customapp"
     inputs = [
-        "1", "1", "1", "1", "1", app_name, "1", "1"
+        "1",  # venv
+        "1",  # deps
+        "",   # Django version (default)
+        "1",  # git
+        "1",  # django project
+        "1",  # settings
+        # Only after settings prompt is complete, send app name:
+        app_name,  # app name
+        "1",  # create app
+        "1"   # migrations
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
-    result = runner.invoke(main, input="\n".join(inputs))
-    assert result.exit_code == 0
+    result = runner.invoke(main, input="\n".join(inputs) + "\n")
+    assert result.exit_code == 0, f'Output:\n{result.output}'
     assert (temp_project_dir / app_name).exists() or (temp_project_dir / f"{app_name}").exists()

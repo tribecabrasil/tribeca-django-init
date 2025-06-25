@@ -14,9 +14,26 @@ This file is the main orientation point for all AI agents (Cascade, Codex, Winds
 - If you are an agent, always explain in your output which conventions or historical context you are following, especially if you are introducing a new pattern or updating an existing one.
 - **Every CLI command execution must display a friendly, visual context message** (with emojis, usage instructions, and documentation references), both for human users and AI agents. This ensures clarity, onboarding, and a unified experience for all collaborators.
 
+## CLI and Test Debugging Guidance
+
+When working with the CLI and its automated tests (`tests/test_cli.py`), be aware of the following common pitfalls:
+
+- **Test Input Alignment**: The tests use `click.testing.CliRunner` to simulate user input by feeding a newline-separated string. It is critical that the sequence of inputs exactly matches the sequence of prompts in `init_django/cli.py`.
+  - **Symptom**: `click.exceptions.Abort` or unexpected errors where the wrong input is received for a prompt.
+  - **Solution**: Carefully trace the CLI's execution flow. Add temporary debug prints in the CLI to see what value is being received at each prompt. Ensure every single prompt is accounted for in the test's input string, including prompts for versions or optional features.
+
+- **Django Settings Template Errors**: The CLI generates a new Django project from templates (`init_django/templates/`). If the generated project fails during `manage.py migrate` or server startup, the issue is likely in the settings templates.
+  - **Symptom**: `django.core.exceptions.ImproperlyConfigured` or `django.core.management.base.SystemCheckError`.
+  - **Solution**: Ensure that `settings_base.py.tpl` contains all necessary settings for a default Django project to run, including `TEMPLATES` and `DATABASES`. The tests run in an isolated environment, so these settings must be self-sufficient.
+
 ## Example of Update Log
 
 ```
+## [2025-06-25] CLI Test Suite Stabilized
+- Fixed test failures by correcting input sequences to match all CLI prompts (including Django version).
+- Resolved migration errors by adding default `TEMPLATES` and `DATABASES` configurations to `settings_base.py.tpl`.
+- The CLI is now robustly tested for the entire project creation flow.
+
 ## [2025-06-24] Initial project bootstrap and documentation structure finalized
 - All documentation and templates are now in English
 - Docs folder standardized: api_documentation.md, architecture_blueprint.md, django_models_template.md

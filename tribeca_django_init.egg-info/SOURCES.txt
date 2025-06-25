@@ -1,3 +1,4 @@
+LICENSE
 README.md
 pyproject.toml
 init_django/__init__.py

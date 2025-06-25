@@ -3,4 +3,6 @@ Name: tribeca_django_init
 Version: 0.1.0
 Summary: CLI para bootstrap de projetos Django seguindo convenções profissionais.
 Author-email: Flavio Paulino <dev@tribecadigital.com.br>
+License-File: LICENSE
 Requires-Dist: click
+Dynamic: license-file
