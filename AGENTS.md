@@ -30,6 +30,43 @@ When working with the CLI and its automated tests (`tests/test_cli.py`), be awar
   - **Symptom**: `git commit` fails with `fatal: empty ident name` or `Author identity unknown`.
   - **Solution**: Add a step to the CI workflow (`.github/workflows/ci.yml`) to configure a dummy user name and email before running the tests. Example: `git config --global user.name "Test User"` and `git config --global user.email "test@example.com"`.
 
+## Integration with MCPs and Agents
+
+### Practical Usage Examples
+
+#### Human Mode (Interactive)
+
+For developers working locally or interactively:
+
+```bash
+python -m init_django.cli_user
+```
+
+This will guide you step-by-step with prompts and friendly messages.
+
+#### MCP/Agent Mode (Non-interactive, JSON Output)
+
+For AI agents, CI/CD, or automation:
+
+```bash
+python -m init_django.cli_mcp --json --venv recreate --install-deps yes --django-version 5.2.3 --git-init yes --project yes --settings yes --app-name users --app-create yes --migrate yes --readme yes
+```
+
+Sample JSON output:
+
+```json
+{"event": "git", "status": "success", "message": "Git initialized", "data": {}, "ts": "2025-06-25T07:00:00Z"}
+```
+
+**Best Practices:**
+- Always keep both CLI modes (`cli_user.py` and `cli_mcp.py`) in sync.
+- Use the JSON mode for all agent, MCP, or CI/CD integrations.
+- See `docs/mcps_documentation.md` for advanced integration and event schema.
+
+## Integração com MCPs (Multi-Component Platforms/AI agents)
+
+O CLI Tribeca Django Init está sendo planejado para uso facilitado por agentes inteligentes e automação. Veja detalhes, exemplos e melhores práticas em [`docs/mcps_documentation.md`](docs/mcps_documentation.md).
+
 ## Settings Templates Architecture (2025)
 
 - **Motivação:** Para garantir clareza, manutenção e alinhamento com as melhores práticas Django, os templates de settings agora ficam em `init_django/templates/settings/`.

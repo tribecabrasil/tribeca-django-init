@@ -5,7 +5,9 @@ from pathlib import Path
 from click.testing import CliRunner
 import pytest
 
-from init_django.cli import main
+from init_django.cli_user import main
+from init_django.cli_mcp import main as mcp_main
+import json
 
 @pytest.fixture
 def temp_project_dir():

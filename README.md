@@ -1,4 +1,4 @@
-# Tribeca Django Init
+# Tribeca Django Init — MCPs & Agents Ready 🚀🤖
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/tribecabrasil/tribeca-django-init/ci.yml?branch=main)](https://github.com/tribecabrasil/tribeca-django-init/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/tribecabrasil/tribeca-django-init)](https://codecov.io/gh/tribecabrasil/tribeca-django-init)
@@ -6,7 +6,9 @@
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/downloads/)
 [![Django](https://img.shields.io/badge/django-5.2%2B-green)](https://www.djangoproject.com/)
 
-**Modern, interactive CLI for bootstrapping Django projects with best practices, automation, and production-ready structure.**
+> **The next-gen Django project bootstrapper for humans, CI/CD, and AI agents.**
+> 
+> **Full compatibility with Multi-Component Platforms (MCPs), automation, and intelligent workflows.**
 
 ---
 
@@ -51,11 +53,31 @@ Tribeca Django Init is a fully interactive CLI that automates the creation of ro
 
 ## 💡 Usage
 
+### Modo Humano (Interativo)
+
+Para usar o CLI no modo tradicional, basta rodar:
+
 ```bash
-init-django
+python -m init_django.cli_user
 ```
 
-- Follow the interactive prompts in your terminal
+Você será guiado por prompts interativos, com mensagens amigáveis e contexto visual.
+
+### Modo MCP / JSON (Automação, Agentes)
+
+Para integração com MCPs, automação ou agentes, utilize o modo não-interativo/JSON:
+
+```bash
+python -m init_django.cli_mcp --json --venv recreate --install-deps yes --django-version 5.2.3 --git-init yes --project yes --settings yes --app-name users --app-create yes --migrate yes --readme yes
+```
+
+Cada etapa emitirá uma linha JSON estruturada, por exemplo:
+
+```json
+{"event": "virtualenv", "status": "success", "message": ".venv recreated", "data": {"path": "/caminho/projeto/.venv"}, "ts": "2025-06-25T07:00:00Z"}
+```
+
+Veja mais exemplos e explicações em `docs/mcps_documentation.md`.
 - The CLI will guide you through each step: venv, dependencies, git, project, settings, app, migrations, and docs
 
 ---
@@ -119,6 +141,10 @@ Pull requests and suggestions are welcome! For major changes, please open an iss
 ---
 
 ## 📚 Documentation
+
+### Integração com MCPs (Multi-Component Platforms/AI agents)
+O suporte e a compatibilidade com MCPs já está em planejamento ativo. Veja detalhes, exemplos e roadmap em [`docs/mcps_documentation.md`](docs/mcps_documentation.md).
+
 - [README](README.md): this file
 - [AGENTS.md](AGENTS.md): standards & automation for humans and AI
 - [docs/](init_django/templates/docs/): API, architecture, and models templates
