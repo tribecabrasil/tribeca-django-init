@@ -1,0 +1,12 @@
+[project]
+name = "tribeca_django_init"
+version = "0.1.0"
+description = "CLI para bootstrap de projetos Django seguindo convenções profissionais."
+authors = [{name="Flavio Paulino", email="dev@tribecadigital.com.br"}]
+dependencies = ["click"]
+
+[project.scripts]
+init-django = "init_django.cli:main"
+
+[tool.pip.install]
+post-install = "scripts/post_install.py"

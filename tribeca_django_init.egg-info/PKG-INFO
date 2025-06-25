@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: tribeca_django_init
+Version: 0.1.0
+Summary: CLI para bootstrap de projetos Django seguindo convenções profissionais.
+Author-email: Flavio Paulino <dev@tribecadigital.com.br>
+Requires-Dist: click

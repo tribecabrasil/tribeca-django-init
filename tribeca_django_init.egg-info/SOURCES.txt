@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+init_django/__init__.py
+init_django/cli.py
+tests/test_cli.py
+tribeca_django_init.egg-info/PKG-INFO
+tribeca_django_init.egg-info/SOURCES.txt
+tribeca_django_init.egg-info/dependency_links.txt
+tribeca_django_init.egg-info/entry_points.txt
+tribeca_django_init.egg-info/requires.txt
+tribeca_django_init.egg-info/top_level.txt
