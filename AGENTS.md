@@ -26,9 +26,16 @@ When working with the CLI and its automated tests (`tests/test_cli.py`), be awar
   - **Symptom**: `django.core.exceptions.ImproperlyConfigured` or `django.core.management.base.SystemCheckError`.
   - **Solution**: Ensure that `settings_base.py.tpl` contains all necessary settings for a default Django project to run, including `TEMPLATES` and `DATABASES`. The tests run in an isolated environment, so these settings must be self-sufficient.
 
+- **Git Identity in CI**: The automated tests include running `git commit`. In a CI environment like GitHub Actions, there is no default Git user configured.
+  - **Symptom**: `git commit` fails with `fatal: empty ident name` or `Author identity unknown`.
+  - **Solution**: Add a step to the CI workflow (`.github/workflows/ci.yml`) to configure a dummy user name and email before running the tests. Example: `git config --global user.name "Test User"` and `git config --global user.email "test@example.com"`.
+
 ## Example of Update Log
 
 ```
+## [2025-06-25] CI Workflow Stabilized
+- Fixed CI build failures by adding a step to configure Git user identity before running tests.
+
 ## [2025-06-25] CLI Test Suite Stabilized
 - Fixed test failures by correcting input sequences to match all CLI prompts (including Django version).
 - Resolved migration errors by adding default `TEMPLATES` and `DATABASES` configurations to `settings_base.py.tpl`.
