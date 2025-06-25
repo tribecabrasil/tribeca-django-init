@@ -1,6 +1,6 @@
 # AGENTS.md — Guia para Agentes em Projetos Django
 
-Este arquivo orienta agentes de IA (Cascade, Codex, Windsurf, etc) e desenvolvedores humanos quanto a padrões, práticas e automações obrigatórias em projetos Django modernos.
+This file guides AI agents (Cascade, Codex, Windsurf, etc) and human developers on standards, practices, and required automations in modern Django projects.
 
 ## Estrutura Recomendada de Projeto Django
 
@@ -21,72 +21,63 @@ Este arquivo orienta agentes de IA (Cascade, Codex, Windsurf, etc) e desenvolved
 * Sempre use type annotations (PEP 484/526)
 * Comentários explicativos para lógicas complexas
 * Cada função/método deve ter responsabilidade única
-* Use async/await apenas quando necessário (ex: I/O intensivo)
 
-## Estrutura de Apps Django
+## Django App Structure
 
-* Cada domínio de negócio deve ser um app Django pequeno e isolado
-* Models, views, forms, serializers e admin devem ser organizados por arquivo
-* Sempre documente models conforme o template em `init_django/templates/docs/ProjectDjangoModels.md.ply`
-* Use migrations para toda alteração de schema
+* Each business domain should be a small and isolated Django app
+* Models, views, forms, serializers, and admin should be organized by file
+* Always document models according to the template in `init_django/templates/docs/ProjectDjangoModels.md.ply`
+* Use migrations for every schema change
 
 ## Docstrings (PEP 257 — Windows-style)
 
-* Resumo em uma linha seguido de explicação detalhada
-* Sempre documente parâmetros e tipos de retorno
+* One-line summary followed by a detailed explanation
+* Always document parameters and return types
 
-Exemplo:
+Example:
 
 ```python
 def clean_text(text: str) -> str:
-    """Limpa texto removendo caracteres indesejados e espaços extras.
+    """Clean text by removing unwanted characters and extra spaces.
 
     Args:
-        text: Texto de entrada.
+        text: Input text.
 
     Returns:
-        Texto limpo e padronizado.
+        Cleaned and standardized text.
     """
     pass
 ```
 
-## Testes e Qualidade
+## Tests and Quality
 
-* Use pytest e pytest-django para todos os apps
-* Cobertura mínima recomendada: 80%
-* Configure pre-commit com Black, isort, flake8, e testes automáticos
+* Use pytest and pytest-django for all apps
+* Always write tests for new features
+* Maintain test coverage >=80%
+* All checks must pass before merging any PR.
 
-```bash
-black --check .
-isort --check-only .
-flake8
-pytest
-```
+## Pull Requests and CI/CD
 
-Todos os checks devem passar antes de mergear qualquer PR.
+* PRs must be small, focused, and well described
+* Always reference related issues
+* All tests and linters must pass in CI
 
-## Pull Requests e CI/CD
+## Integration with Agents/AI
 
-* PRs devem ser pequenos, focados e bem descritos
-* Sempre referencie issues relacionadas
-* Todos os testes e linters devem passar no CI
-
-## Integração com Agentes/IA
-
-* Sempre consulte este arquivo e o README.md da raiz para decisões de arquitetura, padrões e automação
-* Use o template de models como referência obrigatória
-* Não sobrescreva configs/settings sem confirmação do usuário
+* Always consult this file and the root README.md for architecture, standards, and automation decisions
+* Use the models template as a mandatory reference
+* Do not overwrite configs/settings without user confirmation
 
 ---
 
-## Docker e Contêineres
+## Docker and Containers
 
-- Sempre forneça um `Dockerfile` otimizado para produção, usando imagens oficiais do Python e Django.
-- Utilize variáveis de ambiente para configurações sensíveis (nunca hardcode).
-- Use `docker-compose.yml` para orquestrar serviços como banco de dados (Postgres), cache (Redis), Celery worker, Flower, etc.
-- Inclua instruções para build, run, e troubleshooting no README.md.
+- Always provide a production-optimized `Dockerfile` using official Python and Django images.
+- Use environment variables for sensitive configurations (never hardcode).
+- Use `docker-compose.yml` to orchestrate services like database (Postgres), cache (Redis), Celery worker, Flower, etc.
+- Include instructions for build, run, and troubleshooting in README.md.
 
-Exemplo mínimo de `docker-compose.yml`:
+Minimal `docker-compose.yml` example:
 
 ```yaml
 version: '3.8'
@@ -106,7 +97,7 @@ services:
     environment:
       POSTGRES_DB: project_db
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      POSTGRES_PASSWORD: password
   redis:
     image: redis:7
   celery:
@@ -127,14 +118,14 @@ services:
 
 ## REST APIs
 
-- Use Django REST Framework (DRF) para criar APIs robustas e padronizadas.
-- Implemente versionamento de API (`/api/v1/`).
-- Sempre escreva serializers, viewsets, e utilize routers do DRF.
-- Documente as rotas com Swagger/OpenAPI (ex: drf-yasg ou drf-spectacular).
-- Escreva testes para endpoints (usando APIClient do DRF).
-- Siga princípios RESTful: métodos HTTP corretos, status codes apropriados, mensagens de erro padronizadas.
+- Use Django REST Framework (DRF) to create robust and standardized APIs.
+- Implement API versioning (`/api/v1/`).
+- Always write serializers, viewsets, and use DRF routers.
+- Document routes with Swagger/OpenAPI (e.g., drf-yasg or drf-spectacular).
+- Write tests for endpoints (using DRF's APIClient).
+- Follow RESTful principles: correct HTTP methods, appropriate status codes, standardized error messages.
 
-Exemplo de viewset básico:
+Basic viewset example:
 
 ```python
 from rest_framework import viewsets
