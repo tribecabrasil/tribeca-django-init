@@ -189,6 +189,50 @@ Tribeca Digital — São Paulo, Brazil
 
 ## 🏷️ Suggested GitHub Topics
 
+## ✨ Features
+- Interactive, emoji-powered CLI
+- Detects and reuses existing resources
+- Modern, production-ready Django setup
+- DRF and quality tools included by default
+- All docs, templates, and code in English
+- Ready for CI/CD and cloud deployment
+
+---
+
+## 🤝 Contributing
+Pull requests and suggestions are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+- Follow the project standards in [AGENTS.md](AGENTS.md)
+- Use English for all documentation and code
+- Update/add tests in `tests/` when relevant
+
+---
+
+## 📚 Documentation
+
+### Integração com MCPs (Multi-Component Platforms/AI agents)
+O suporte e a compatibilidade com MCPs já está em planejamento ativo. Veja detalhes, exemplos e roadmap em [`docs/mcps_documentation.md`](docs/mcps_documentation.md).
+
+- [README](README.md): this file
+- [AGENTS.md](AGENTS.md): standards & automation for humans and AI
+- [docs/](init_django/templates/docs/): API, architecture, and models templates
+
+---
+
+## 🧑‍💻 Author
+**Flavio Paulino**  
+Tribeca Digital — São Paulo, Brazil  
+[http://tribecadigital.com.br](http://tribecadigital.com.br)
+
+---
+
+## License
+[MIT](LICENSE)
+
+---
+
+## 🏷️ Suggested GitHub Topics
+
 django, cli, bootstrap, project-template, rest-api, python, automation, devtools, tribeca, modern-stack
 - [cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django)
 - [Django Project](https://www.djangoproject.com/)
@@ -197,3 +241,4 @@ django, cli, bootstrap, project-template, rest-api, python, automation, devtools
 ---
 
 > Gerado por `Tribeca Django Init` — mantenha seu bootstrap sempre atualizado!
+
