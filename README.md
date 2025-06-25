@@ -15,6 +15,30 @@
 ## 🚀 Overview
 Tribeca Django Init is a fully interactive CLI that automates the creation of robust Django projects, following the latest standards for API-first, maintainable, and scalable web applications.
 
+---
+
+## 🏷️ Recommended Tags
+
+django, cli, bootstrap, automation, mcp, ai-agents, devops, ci-cd, rest-api, production-ready, project-generator, python, template, best-practices, internationalization, i18n, scaffold, json, modern
+
+---
+
+## 📢 Project Description
+
+**Short:**
+> Next-gen Django project bootstrapper — interactive, agent-ready, CI/CD-friendly, and production-focused. Full support for MCPs, automation, and best practices.
+
+**Long:**
+> Tribeca Django Init is a modern, interactive CLI for bootstrapping Django projects with production-ready structure, automation, and best practices. Designed for seamless integration with Multi-Component Platforms (MCPs), AI agents, and CI/CD pipelines, it offers both human-friendly prompts and a robust JSON mode for headless, scriptable workflows.
+>
+> - Dual-mode CLI: interactive for humans, JSON/flags for agents and automation
+> - Compatible with AI agents and modern DevOps workflows
+> - Instantly creates projects with Django REST, i18n, and scalable settings
+> - Standardizes best practices for security, maintainability, and deployment
+> - Easily extendable and future-proof for evolving automation needs
+
+---
+
 - Fast bootstrap with numbered choices, emojis, and clear prompts
 - Installs Django 5.2+, Django REST Framework, and a modern stack
 - Modular settings structure: `settings/base.py.tpl` (base), `settings/dev.py.tpl` (development), `settings/prod.py.tpl` (production)
@@ -77,7 +101,7 @@ Cada etapa emitirá uma linha JSON estruturada, por exemplo:
 {"event": "virtualenv", "status": "success", "message": ".venv recreated", "data": {"path": "/caminho/projeto/.venv"}, "ts": "2025-06-25T07:00:00Z"}
 ```
 
-Veja mais exemplos e explicações em `docs/mcps_documentation.md`.
+Veja mais exemplos e explicações em [docs/mcps_documentation.md](docs/mcps_documentation.md).
 - The CLI will guide you through each step: venv, dependencies, git, project, settings, app, migrations, and docs
 
 ---

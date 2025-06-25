@@ -7,7 +7,7 @@ O CLI Tribeca Django Init está sendo planejado e evoluído para uso não apenas
 - Execução não-interativa via argumentos/flags
 - Prompts e saídas estruturadas e padronizadas
 - Documentação clara para integração
-- Testes automatizados para uso headless
+- Testes automatizados para ambos os modos (humano e MCP/JSON), garantindo robustez para integração com agentes e automação
 
 ## Arquitetura CLI: Interface Humana e MCP
 
