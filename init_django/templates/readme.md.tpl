@@ -69,7 +69,7 @@ init-django
 ## 🏗️ Example Project Structure
 ```text
 config/
-  settings/
+  settings/  # Contains base.py, dev.py, prod.py (generated from templates/settings/)
     __init__.py
     base.py
     dev.py

@@ -5,7 +5,7 @@ Este arquivo orienta agentes de IA (Cascade, Codex, Windsurf, etc) e desenvolved
 ## Estrutura Recomendada de Projeto Django
 
 * `/config`: Pacote principal do projeto (settings particionados)
-  * `/settings/`: `base.py`, `dev.py`, `prod.py`, `__init__.py`
+  * `/settings/`: `base.py` (from `settings/base.py.tpl`), `dev.py` (from `settings/dev.py.tpl`), `prod.py` (from `settings/prod.py.tpl`), `__init__.py`
 * `/manage.py`: Script de gerenciamento Django
 * `/app_name/`: Apps Django separados por domínio de negócio
 * `/tests/`: Testes unitários e de integração

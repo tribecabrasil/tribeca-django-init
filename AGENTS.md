@@ -24,11 +24,22 @@ When working with the CLI and its automated tests (`tests/test_cli.py`), be awar
 
 - **Django Settings Template Errors**: The CLI generates a new Django project from templates (`init_django/templates/`). If the generated project fails during `manage.py migrate` or server startup, the issue is likely in the settings templates.
   - **Symptom**: `django.core.exceptions.ImproperlyConfigured` or `django.core.management.base.SystemCheckError`.
-  - **Solution**: Ensure that `settings_base.py.tpl` contains all necessary settings for a default Django project to run, including `TEMPLATES` and `DATABASES`. The tests run in an isolated environment, so these settings must be self-sufficient.
+  - **Solution**: Ensure that `settings/base.py.tpl` contains all necessary settings for a default Django project to run, including `TEMPLATES` and `DATABASES`. The tests run in an isolated environment, so these settings must be self-sufficient.
 
 - **Git Identity in CI**: The automated tests include running `git commit`. In a CI environment like GitHub Actions, there is no default Git user configured.
   - **Symptom**: `git commit` fails with `fatal: empty ident name` or `Author identity unknown`.
   - **Solution**: Add a step to the CI workflow (`.github/workflows/ci.yml`) to configure a dummy user name and email before running the tests. Example: `git config --global user.name "Test User"` and `git config --global user.email "test@example.com"`.
+
+## Settings Templates Architecture (2025)
+
+- **Motivação:** Para garantir clareza, manutenção e alinhamento com as melhores práticas Django, os templates de settings agora ficam em `init_django/templates/settings/`.
+- **Arquivos:**
+  - `base.py.tpl`, `dev.py.tpl`, `prod.py.tpl` (geram os arquivos finais em `config/settings/`)
+- **Vantagens:**
+  - Facilita a busca e manutenção dos templates.
+  - Permite adicionar outros templates de settings ou ambientes facilmente.
+  - Fica alinhado com o padrão Django e projetos modernos.
+  - Torna o fluxo do CLI e a documentação mais previsíveis para humanos e IAs.
 
 ## Example of Update Log
 
@@ -38,7 +49,7 @@ When working with the CLI and its automated tests (`tests/test_cli.py`), be awar
 
 ## [2025-06-25] CLI Test Suite Stabilized
 - Fixed test failures by correcting input sequences to match all CLI prompts (including Django version).
-- Resolved migration errors by adding default `TEMPLATES` and `DATABASES` configurations to `settings_base.py.tpl`.
+- Resolved migration errors by adding default `TEMPLATES` and `DATABASES` configurations to `settings/base.py.tpl`.
 - The CLI is now robustly tested for the entire project creation flow.
 
 ## [2025-06-24] Initial project bootstrap and documentation structure finalized

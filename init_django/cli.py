@@ -152,7 +152,7 @@ def main():
                     if settings_choice == "1":
                         os.makedirs(settings_dir)
                         for f in ["base.py", "dev.py", "prod.py"]:
-                            copyfile(TEMPLATES_DIR / f"settings_{f}.tpl", settings_dir / f)
+                            copyfile(TEMPLATES_DIR / "settings" / f"{f}.tpl", settings_dir / f)
                         with open(settings_dir / "__init__.py", "w") as f:
                             f.write("from .dev import *  # default to dev")
                         # Update wsgi.py to use the new settings

@@ -15,7 +15,8 @@ Tribeca Django Init is a fully interactive CLI that automates the creation of ro
 
 - Fast bootstrap with numbered choices, emojis, and clear prompts
 - Installs Django 5.2+, Django REST Framework, and a modern stack
-- Partitioned settings (base/dev/prod)
+- Modular settings structure: `settings/base.py.tpl` (base), `settings/dev.py.tpl` (development), `settings/prod.py.tpl` (production)
+- Uses django-environ and .env for environment-based configuration
 - Automated quality tools and CI/CD ready
 - Documentation and templates in English, ready for international teams
 
@@ -71,13 +72,29 @@ init-django
 config/
   settings/
     __init__.py
-    base.py
-    dev.py
-    prod.py
+    base.py  # Generated from settings/base.py.tpl
+    dev.py   # Generated from settings/dev.py.tpl
+    prod.py  # Generated from settings/prod.py.tpl
 manage.py
 .venv/
 .git/
 README.md
+.env  # Your environment variables (see .env.example)
+```
+
+### Settings Templates
+- All Django settings are generated from templates in `init_django/templates/`:
+  - `settings/base.py.tpl` → `config/settings/base.py`
+  - `settings/dev.py.tpl` → `config/settings/dev.py`
+  - `settings/prod.py.tpl` → `config/settings/prod.py`
+- The CLI will copy and configure these automatically.
+
+### Environment Variables & django-environ
+- The project uses [django-environ](https://django-environ.readthedocs.io/) for configuration.
+- Create a `.env` file in your project root (see `.env.example` for guidance).
+- Typical variables:
+  - `DJANGO_SECRET_KEY`, `DEBUG`, `DJANGO_ALLOWED_HOSTS`, `DATABASE_URL`, etc.
+- This approach keeps secrets and environment-specific config out of version control and enables safe, Twelve-Factor deployments.
 ```
 
 ---
