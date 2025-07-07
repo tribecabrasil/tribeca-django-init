@@ -152,7 +152,8 @@ README.md
 
 ### Environment Variables & django-environ
 - The project uses [django-environ](https://django-environ.readthedocs.io/) for configuration.
-- Create a `.env` file in your project root (see `.env.example` for guidance).
+- The CLI can automatically copy `.env.example` to `.env` after project creation.
+- You can also manually create the file if preferred.
 - Typical variables:
   - `DJANGO_SECRET_KEY`, `DEBUG`, `DJANGO_ALLOWED_HOSTS`, `DATABASE_URL`, etc.
 - This approach keeps secrets and environment-specific config out of version control and enables safe, Twelve-Factor deployments.

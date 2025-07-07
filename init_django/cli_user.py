@@ -13,6 +13,7 @@ from init_django.cli_common import (
     apply_migrations,
     create_app,
     create_readme,
+    create_env_file,
     create_settings_package,
     create_virtualenv,
     initialize_git,
@@ -169,6 +170,20 @@ def main() -> None:
             else:
                 create_readme(base)
                 click.echo("README.md created from template.")
+
+            if (base / ".env").exists():
+                click.echo(".env already exists.")
+            else:
+                env_choice = click.prompt(
+                    "8️⃣  Create .env from .env.example?\n1️⃣  Create file\n2️⃣  Skip this step\nEnter your choice:",
+                    type=click.Choice(["1", "2"]),
+                    default="1",
+                )
+                if env_choice == "1":
+                    create_env_file(base)
+                    click.echo(".env file created from template.")
+                else:
+                    click.echo("Skipping .env creation.")
         else:
             click.echo("Skipping Django project creation.")
 

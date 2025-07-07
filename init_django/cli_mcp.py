@@ -15,6 +15,7 @@ from init_django.cli_common import (
     apply_migrations,
     create_app,
     create_readme,
+    create_env_file,
     create_settings_package,
     create_virtualenv,
     emit_json_event,
@@ -42,6 +43,7 @@ from init_django.cli_common import (
 @click.option("--app-create", type=click.Choice(["yes", "no"]), default=None)
 @click.option("--migrate", type=click.Choice(["yes", "no"]), default=None)
 @click.option("--readme", type=click.Choice(["yes", "no"]), default=None)
+@click.option("--env-file", type=click.Choice(["yes", "no"]), default=None)
 def main(
     json_mode: bool,
     venv: Optional[str],
@@ -54,6 +56,7 @@ def main(
     app_create: Optional[str],
     migrate: Optional[str],
     readme: Optional[str],
+    env_file: Optional[str],
 ) -> None:
     """MCP/agent CLI: non-interactive, argument-driven, emits JSON."""
     try:
@@ -192,6 +195,25 @@ def main(
                 )
             else:
                 emit_json_event("readme", "skipped", "Skipped README creation", {})
+
+            # .env file
+            if (base / ".env").exists():
+                emit_json_event(
+                    "env_file",
+                    "success",
+                    ".env already exists",
+                    {"path": str(base / ".env")},
+                )
+            elif env_file == "yes":
+                create_env_file(base)
+                emit_json_event(
+                    "env_file",
+                    "success",
+                    ".env created from template",
+                    {"path": str(base / ".env")},
+                )
+            else:
+                emit_json_event("env_file", "skipped", "Skipped .env creation", {})
         else:
             emit_json_event("project", "skipped", "Skipped Django project creation", {})
         emit_json_event(
