@@ -1,44 +1,41 @@
-# Integração com MCPs (Multi-Component Platforms/AI Agents)
+# Integration with MCPs (Multi-Component Platforms / AI Agents)
 
-Este documento detalha como tornar o Tribeca Django Init CLI totalmente compatível, automatizável e amigável para plataformas MCPs e agentes de IA.
+This guide explains how to make the Tribeca Django Init CLI fully automation friendly and suitable for AI agents and other platforms.
 
-## Visão Geral
-O CLI Tribeca Django Init está sendo planejado e evoluído para uso não apenas por humanos, mas também por agentes inteligentes e plataformas de automação (MCPs). Isso inclui:
-- Execução não-interativa via argumentos/flags
-- Prompts e saídas estruturadas e padronizadas
-- Documentação clara para integração
-- Testes automatizados para ambos os modos (humano e MCP/JSON), garantindo robustez para integração com agentes e automação
+## Overview
+The CLI is designed for both humans and intelligent automation tools. Key goals include:
+- Non‑interactive execution through flags and arguments
+- Predictable, structured prompts and output
+- Clear documentation for third‑party integration
+- Automated tests covering both human and JSON/MCP modes
 
-## Arquitetura CLI: Interface Humana e MCP
+## CLI Architecture: Human and MCP Interfaces
+The Tribeca Django Init CLI offers two synchronized entry points:
 
-O Tribeca Django Init CLI possui duas interfaces totalmente sincronizadas:
+- `cli_user.py`: traditional interactive mode with friendly prompts
+- `cli_mcp.py`: non‑interactive mode that accepts flags and produces JSON output
+- All utility and business logic lives in `cli_common.py` so both modes share the same API and semantics
 
-- `cli_user.py`: interface tradicional para humanos, com prompts interativos, mensagens amigáveis e UX aprimorada.
-- `cli_mcp.py`: interface para MCPs/agentes/automação, modo não-interativo, argumentos/flags e saída padronizada JSON.
-- Toda a lógica utilitária e de negócio reside em `cli_common.py`, garantindo que ambos os modos compartilhem a mesma API e semântica.
+**Important**: whenever a new feature or command is added, it must exist in both interfaces (`cli_user.py` and `cli_mcp.py`).
 
-**IMPORTANTE:**
-Sempre que uma nova feature, comando ou ajuste for implementado, garanta que a funcionalidade seja replicada e compatível em ambos os arquivos (`cli_user.py` e `cli_mcp.py`).
+- `cli.py` detects which mode to run and delegates accordingly
+- Both interfaces accept the same commands and options; only the interaction style changes
+- Tests and documentation must cover both modes
 
-- O entrypoint (`cli.py`) detecta o modo automaticamente e delega para o arquivo correto.
-- Ambas as interfaces devem aceitar os mesmos comandos, argumentos e fluxos, apenas mudando a forma de interação (prompts vs flags/JSON).
-- Testes e documentação devem cobrir ambos os modos.
+## JSON Mode (`--json`)
+When the `--json` flag is provided, the CLI emits structured JSON describing each step. This allows easy parsing by automation tools.
 
-## Modo JSON (--json)
-
-Para integração avançada com MCPs, o CLI suporta o argumento `--json`, que faz com que todas as saídas relevantes do CLI sejam emitidas em formato JSON estruturado, facilitando o parsing por agentes e scripts automatizados.
-
-### Exemplo de uso
+### Example usage
 ```bash
 tribeca-django-init ... --json
 ```
 
-### Exemplo de saída JSON
+### Example JSON output
 ```json
 {
   "step": "virtualenv",
   "status": "created",
-  "path": "/home/user/projeto/.venv"
+  "path": "/home/user/project/.venv"
 }
 {
   "step": "dependencies",
@@ -53,44 +50,45 @@ tribeca-django-init ... --json
 {
   "step": "done",
   "status": "success",
-  "project_root": "/home/user/projeto"
+  "project_root": "/home/user/project"
 }
 ```
 
-- Cada etapa relevante do CLI gera um objeto JSON na saída padrão.
-- Em caso de erro, um objeto JSON com `status: error` e mensagem detalhada é emitido.
-- Ideal para integração com MCPs, CI/CD, scripts e plataformas de agentes inteligentes.
+- Each relevant step outputs a JSON object
+- On error, a JSON object with `status: error` and a message is produced
+- Ideal for MCPs, CI/CD pipelines, and intelligent agents
 
-## Roadmap e Features Planejadas
+## Roadmap and Planned Features
 
-### 1. Modo Não-Interativo/Automatizável
-- Permitir execução do CLI com todos os parâmetros via argumentos de linha de comando (ex: `--language-code`, `--timezone`, `--no-input`, etc.)
-- Exemplo:
+### 1. Non‑Interactive / Automatable Mode
+- Allow running the CLI entirely via command‑line flags (e.g. `--language-code`, `--timezone`, `--no-input`)
+- Example:
   ```bash
-  tribeca-django-init --language-code pt-br --second-language en --timezone America/Sao_Paulo --no-input
+  tribeca-django-init --language-code en --second-language pt-br --timezone America/Sao_Paulo --no-input
   ```
 
-### 2. Prompts e Saídas Estruturadas
-- Garantir que todos os prompts e saídas do CLI sejam claros, previsíveis e facilmente parseáveis por scripts e agentes.
-- Opcional: saída em JSON ou modo "machine-friendly".
+### 2. Structured Prompts and Output
+- Ensure prompts and CLI output are clear and easily parsed
+- Optional: provide JSON or other machine‑friendly output formats
 
-### 3. Documentação para Agentes/MCPs
-- Seção dedicada no README e AGENTS.md sobre integração com MCPs
-- Exemplos de automação (scripts, pipelines CI/CD, integração com plataformas de agentes)
+### 3. Documentation for Agents/MCPs
+- Dedicated sections in `README` and `AGENTS.md` showing integration examples
+- Automation snippets, CI/CD pipelines, and agent workflows
 
-### 4. Testes Automatizados para Uso por Agentes/MCPs
-- Testes que garantam funcionamento do CLI em ambientes headless, CI/CD e automação
-- Testes de idempotência e robustez
+### 4. Automated Tests for Agent Use
+- Tests that verify the CLI works in headless or CI environments
+- Idempotency and robustness checks
 
-### 5. Boas Práticas de Integração
-- Recomendações para integração segura e previsível em pipelines
-- Sugestão de padrões de resposta e tratamento de erros
-
----
-
-## Referência na Documentação
-> O suporte e compatibilidade com MCPs já está em planejamento ativo. Veja também o backlog e a seção "IA, Automação e MCPs" para detalhes e progresso.
+### 5. Integration Best Practices
+- Recommendations for safe integration in pipelines
+- Suggested patterns for responses and error handling
 
 ---
 
-Sinta-se à vontade para contribuir com sugestões, exemplos ou abrir issues sobre integração com MCPs!
+## Documentation Reference
+Support for MCPs is under active development. See the backlog and the "AI, Automation and MCPs" section for progress.
+
+---
+
+Feel free to contribute ideas, examples, or open issues about MCP integration!
+
