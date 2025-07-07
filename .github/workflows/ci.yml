@@ -23,6 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
           pip install pytest pytest-cov
+          pip install pre-commit
+      - name: Run pre-commit
+        run: pre-commit run --all-files
       - name: Configure Git
         run: |
           git config --global user.name "Test User"
