@@ -2,15 +2,17 @@
 Funções utilitárias e lógica compartilhada entre interfaces CLI (usuário e MCP).
 Sempre que um comando for adicionado ou alterado, garanta que ambos cli_user.py e cli_mcp.py estejam compatíveis com a mesma API e semântica.
 """
+
+import json
 import os
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 from shutil import copyfile
 from typing import Any, Dict, Optional
 
 import click
-import json
-from datetime import datetime, timezone
+
 
 def run(cmd: str, check: bool = True) -> None:
     """Run a shell command and echo its output.
@@ -43,6 +45,7 @@ def run(cmd: str, check: bool = True) -> None:
             click.echo("[stderr]", err=True)
             click.echo(e.stderr, err=True)
         raise
+
 
 def emit_json_event(
     event: str,
@@ -77,6 +80,7 @@ def emit_json_event(
     if error_code:
         obj["error_code"] = error_code
     print(json.dumps(obj), flush=True)
+
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
