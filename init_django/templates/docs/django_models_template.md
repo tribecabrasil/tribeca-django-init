@@ -40,12 +40,12 @@ class CustomUser(AbstractUser):
         'auth.Permission',
         verbose_name='user permissions',
         blank=True,
-        related_name='user_permissions'  # Nome relacionado único
+        related_name='user_permissions'  # Unique related name
     )
 
     def save(self, *args, **kwargs):
         """
-        Garante que o username será igual ao email, caso não definido.
+        Ensure the username matches the email if not already defined.
         """
         if not self.username:
             self.username = self.email
@@ -55,12 +55,12 @@ class CustomUser(AbstractUser):
         return f"{self.email} ({self.get_permission_level_display()})"
 ```
 
-| Campo             | Tipo         | Obrigatório | Opções/Choices                  | Descrição                                  |
-|-------------------|--------------|-------------|---------------------------------|---------------------------------------------|
-| firebase_uid      | CharField    | Não         | -                               | UID do usuário no Firebase                  |
-| permission_level  | CharField    | Sim         | admin, editor, viewer, registered| Nível de permissão do usuário               |
-| is_active         | BooleanField | Não         | -                               | Indica se o usuário está ativo              |
-| user_permissions  | ManyToMany   | Não         | -                               | Permissões adicionais                       |
+| Field            | Type         | Required | Options/Choices                    | Description                                 |
+|------------------|--------------|----------|-----------------------------------|---------------------------------------------|
+| firebase_uid     | CharField    | No       | -                                 | User UID in Firebase                        |
+| permission_level | CharField    | Yes      | admin, editor, viewer, registered | User permission level                       |
+| is_active        | BooleanField | No       | -                                 | Indicates whether the user is active        |
+| user_permissions | ManyToMany   | No       | -                                 | Additional permissions                      |
 
 ---
 
@@ -69,7 +69,7 @@ class CustomUser(AbstractUser):
 ```python
 class Setting(models.Model):
     """
-    Configuração do sistema para o app accounts.
+    System configuration for the accounts app.
     """
     ref = models.CharField(max_length=50, unique=True, verbose_name='Referência')
     description = models.TextField(verbose_name='Descrição')
@@ -86,7 +86,7 @@ class Setting(models.Model):
     @classmethod
     def get_setting(cls, ref):
         """
-        Retorna o valor de uma configuração pela referência.
+        Returns the value of a setting by reference.
         """
         try:
             x = cls.objects.get(ref=ref)
@@ -97,11 +97,11 @@ class Setting(models.Model):
         return x.val
 ```
 
-| Campo       | Tipo      | Obrigatório | Descrição                                |
-|-------------|-----------|-------------|-------------------------------------------|
-| ref         | CharField | Sim         | Referência única da configuração          |
-| description | TextField | Sim         | Descrição da configuração                 |
-| val         | TextField | Não         | Valor associado à configuração            |
+| Field       | Type      | Required | Description                           |
+|-------------|-----------|----------|---------------------------------------|
+| ref         | CharField | Yes      | Unique setting reference              |
+| description | TextField | Yes      | Setting description                   |
+| val         | TextField | No       | Value associated with the setting     |
 
 ---
 
@@ -112,7 +112,7 @@ class Setting(models.Model):
 ```python
 class SettingWebsite(models.Model):
     """
-    Configuração do sistema para o app website.
+    System configuration for the website app.
     """
     ref = models.CharField(max_length=50, unique=True, verbose_name='Referência')
     description = models.TextField(verbose_name='Descrição')
@@ -129,7 +129,7 @@ class SettingWebsite(models.Model):
     @classmethod
     def get_setting(cls, ref):
         """
-        Retorna o valor de uma configuração pela referência.
+        Returns the value of a setting by reference.
         """
         try:
             x = cls.objects.get(ref=ref)
@@ -140,11 +140,11 @@ class SettingWebsite(models.Model):
         return x.val
 ```
 
-| Campo       | Tipo      | Obrigatório | Descrição                                |
-|-------------|-----------|-------------|-------------------------------------------|
-| ref         | CharField | Sim         | Referência única da configuração          |
-| description | TextField | Sim         | Descrição da configuração                 |
-| val         | TextField | Não         | Valor associado à configuração            |
+| Field       | Type      | Required | Description                           |
+|-------------|-----------|----------|---------------------------------------|
+| ref         | CharField | Yes      | Unique setting reference              |
+| description | TextField | Yes      | Setting description                   |
+| val         | TextField | No       | Value associated with the setting     |
 
 ---
 
@@ -153,7 +153,7 @@ class SettingWebsite(models.Model):
 ```python
 class Contact(models.Model):
     """
-    Mensagens enviadas pelo formulário de contato do site.
+    Messages sent through the site's contact form.
     """
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
@@ -171,19 +171,19 @@ class Contact(models.Model):
         return f"{self.name} - {self.subject}"
 ```
 
-| Campo        | Tipo         | Obrigatório | Descrição                                      |
-|--------------|--------------|-------------|-------------------------------------------------|
-| name         | CharField    | Sim         | Nome do remetente                              |
-| phone        | CharField    | Sim         | Telefone do remetente                          |
-| email        | EmailField   | Sim         | E-mail do remetente                            |
-| subject      | CharField    | Sim         | Assunto da mensagem                            |
-| message      | TextField    | Sim         | Conteúdo da mensagem                           |
-| c            | CharField    | Não         | Campo auxiliar                                 |
-| s            | CharField    | Não         | Campo auxiliar                                 |
-| m            | CharField    | Não         | Campo auxiliar                                 |
-| is_send_mail | BooleanField | Não         | Indica se foi enviado e-mail                   |
-| sales_trigger| TextField    | Não         | Texto de trigger de vendas                     |
-| created_at   | DateTimeField| Não         | Data/hora do envio                             |
+| Field        | Type         | Required | Description                          |
+|--------------|--------------|----------|--------------------------------------|
+| name         | CharField    | Yes      | Sender name                          |
+| phone        | CharField    | Yes      | Sender phone                         |
+| email        | EmailField   | Yes      | Sender email                         |
+| subject      | CharField    | Yes      | Message subject                      |
+| message      | TextField    | Yes      | Message content                      |
+| c            | CharField    | No       | Auxiliary field                      |
+| s            | CharField    | No       | Auxiliary field                      |
+| m            | CharField    | No       | Auxiliary field                      |
+| is_send_mail | BooleanField | No       | Indicates if an email was sent       |
+| sales_trigger| TextField    | No       | Sales trigger text                   |
+| created_at   | DateTimeField| No       | Date/time sent                       |
 
 ---
 
@@ -192,7 +192,7 @@ class Contact(models.Model):
 ```python
 class Anamnese(models.Model):
     """
-    Ficha/anamnese preenchida por usuários do site Corradi.
+    Anamnesis form completed by Corradi website users.
     """
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, blank=True, null=True)
@@ -213,7 +213,7 @@ class Anamnese(models.Model):
     @property
     def dicionario_dict(self):
         """
-        Retorna o campo dicionario como um dicionário Python.
+        Return the `dicionario` field as a Python dictionary.
         """
         import json
         try:
@@ -225,26 +225,26 @@ class Anamnese(models.Model):
         return f"{self.name} - {self.email}"
 ```
 
-| Campo         | Tipo          | Obrigatório | Descrição                                             |
-|---------------|---------------|-------------|--------------------------------------------------------|
-| name          | CharField     | Sim         | Nome do usuário                                       |
-| last_name     | CharField     | Não         | Sobrenome                                             |
-| weight        | CharField     | Não         | Peso                                                  |
-| height        | CharField     | Não         | Altura                                                |
-| age           | CharField     | Não         | Idade                                                 |
-| email         | EmailField    | Sim         | E-mail do usuário                                     |
-| whatsapp      | CharField     | Sim         | WhatsApp                                              |
-| historia      | TextField     | Sim         | Histórico/anamnese                                    |
-| dicionario    | JSONField     | Sim         | Dados adicionais (json)                               |
-| data_hora     | DateTimeField | Não         | Data/hora de criação                                  |
-| is_send_mail  | BooleanField  | Não         | Indica se foi enviado e-mail                          |
-| sales_trigger | TextField     | Não         | Texto de trigger de vendas                            |
-| utm_source    | CharField     | Não         | Origem da campanha (UTM)                              |
-| utm_medium    | CharField     | Não         | Meio da campanha (UTM)                                |
-| utm_campaign  | CharField     | Não         | Campanha (UTM)                                        |
+| Field         | Type          | Required | Description                          |
+|---------------|---------------|----------|--------------------------------------|
+| name          | CharField     | Yes      | User name                            |
+| last_name     | CharField     | No       | Last name                            |
+| weight        | CharField     | No       | Weight                               |
+| height        | CharField     | No       | Height                               |
+| age           | CharField     | No       | Age                                  |
+| email         | EmailField    | Yes      | User email                           |
+| whatsapp      | CharField     | Yes      | WhatsApp                             |
+| historia      | TextField     | Yes      | History/anamnesis                    |
+| dicionario    | JSONField     | Yes      | Additional data (json)               |
+| data_hora     | DateTimeField | No       | Creation date/time                   |
+| is_send_mail  | BooleanField  | No       | Indicates if an email was sent       |
+| sales_trigger | TextField     | No       | Sales trigger text                   |
+| utm_source    | CharField     | No       | Campaign source (UTM)                |
+| utm_medium    | CharField     | No       | Campaign medium (UTM)                |
+| utm_campaign  | CharField     | No       | Campaign (UTM)                       |
 
 ---
 
-## Observações
-- Consulte as classes diretamente nos arquivos models.py para detalhes completos e métodos auxiliares.
-- Siga o padrão de docstrings e comentários conforme o arquivo `agents.md` na raiz do projeto.
+## Notes
+- Refer to the classes in the `models.py` files for full details and helper methods.
+- Follow the docstring and comment style described in the `agents.md` file at the project root.

@@ -1,26 +1,26 @@
-# AGENTS.md — Guia para Agentes em Projetos Django
+# AGENTS.md — Guide for Agents in Django Projects
 
 This file guides AI agents (Cascade, Codex, Windsurf, etc) and human developers on standards, practices, and required automations in modern Django projects.
 
-## Estrutura Recomendada de Projeto Django
+## Recommended Django Project Structure
 
-* `/config`: Pacote principal do projeto (settings particionados)
+* `/config`: Main project package (partitioned settings)
   * `/settings/`: `base.py` (from `settings/base.py.tpl`), `dev.py` (from `settings/dev.py.tpl`), `prod.py` (from `settings/prod.py.tpl`), `__init__.py`
-* `/manage.py`: Script de gerenciamento Django
-* `/app_name/`: Apps Django separados por domínio de negócio
-* `/tests/`: Testes unitários e de integração
-* `/scripts/`: Scripts auxiliares
-* `.venv/`: Ambiente virtual local
+* `/manage.py`: Django management script
+* `/app_name/`: Django apps separated by business domain
+* `/tests/`: Unit and integration tests
+* `/scripts/`: Helper scripts
+* `.venv/`: Local virtual environment
 * `.git/`, `.gitignore`, `README.md`, `AGENTS.md`
 
-## Convenções de Código Python/Django
+## Python/Django Code Conventions
 
-* Use Python 3.12+ e Django 5.2+ (LTS)
-* Siga PEP 8 e formate com Black (máx. 88 chars por linha)
-* Nomes claros: snake_case para funções/variáveis, PascalCase para classes, UPPER_CASE para constantes
-* Sempre use type annotations (PEP 484/526)
-* Comentários explicativos para lógicas complexas
-* Cada função/método deve ter responsabilidade única
+* Use Python 3.12+ and Django 5.2+ (LTS)
+* Follow PEP 8 and format with Black (max. 88 chars per line)
+* Clear names: snake_case for functions/variables, PascalCase for classes, UPPER_CASE for constants
+* Always use type annotations (PEP 484/526)
+* Explanatory comments for complex logic
+* Each function/method must have a single responsibility
 
 ## Django App Structure
 
@@ -137,14 +137,14 @@ class MyModelViewSet(viewsets.ModelViewSet):
     serializer_class = MyModelSerializer
 ```
 
-## Celery (Tarefas Assíncronas)
+## Celery (Asynchronous Tasks)
 
-- Use Celery para tarefas assíncronas e agendadas.
-- Configure Celery no projeto (`config/celery.py`) e adicione inicialização no `__init__.py` do pacote principal.
-- Use Redis ou RabbitMQ como broker.
-- Documente tasks e exemplos de uso.
-- Utilize Flower para monitoramento.
-- Escreva testes para tasks assíncronas.
+- Use Celery for asynchronous and scheduled tasks.
+- Configure Celery in the project (`config/celery.py`) and add initialization in the package's `__init__.py`.
+- Use Redis or RabbitMQ as the broker.
+- Document tasks and usage examples.
+- Use Flower for monitoring.
+- Write tests for asynchronous tasks.
 
 Exemplo de task Celery:
 
@@ -153,18 +153,18 @@ from celery import shared_task
 
 @shared_task
 def send_welcome_email(user_id):
-    # lógica para envio de email
+    # logic to send email
     pass
 ```
 
-## Dicas Gerais
+## General Tips
 
-- Sempre documente como rodar, debugar e monitorar Docker, Celery, e APIs no README.md.
-- Inclua scripts de healthcheck e readiness para produção.
-- Oriente agentes a nunca expor segredos em código ou logs.
+- Always document how to run, debug, and monitor Docker, Celery, and APIs in README.md.
+- Include healthcheck and readiness scripts for production.
+- Instruct agents to never expose secrets in code or logs.
 
 ---
-Consulte sempre este arquivo e o README.md da raiz para garantir conformidade e máxima eficiência na colaboração entre IA e humanos.
+Always consult this file and the root README.md to ensure compliance and maximum efficiency in AI and human collaboration.
 
 ## Coding Conventions
 
