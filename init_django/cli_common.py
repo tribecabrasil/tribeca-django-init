@@ -6,14 +6,29 @@ import os
 import subprocess
 from pathlib import Path
 from shutil import copyfile
+from typing import Any, Dict, Optional
+
 import click
 import json
 from datetime import datetime, timezone
 
-def run(cmd, check=True):
+def run(cmd: str, check: bool = True) -> None:
+    """Run a shell command and echo its output.
+
+    Parameters
+    ----------
+    cmd:
+        Command string to execute.
+    check:
+        If ``True``, raise an exception when the command exits with a non-zero
+        status.
+    """
+
     click.echo(f"→ {cmd}")
     try:
-        completed = subprocess.run(cmd, shell=True, check=check, capture_output=True, text=True)
+        completed = subprocess.run(
+            cmd, shell=True, check=check, capture_output=True, text=True
+        )
         if completed.stdout:
             click.echo(completed.stdout)
         if completed.stderr:
@@ -29,13 +44,35 @@ def run(cmd, check=True):
             click.echo(e.stderr, err=True)
         raise
 
-def emit_json_event(event, status, message, data=None, error_code=None):
-    obj = {
+def emit_json_event(
+    event: str,
+    status: str,
+    message: str,
+    data: Optional[Dict[str, Any]] = None,
+    error_code: Optional[str] = None,
+) -> None:
+    """Emit a JSON event for consumption by agents or CI/CD.
+
+    Parameters
+    ----------
+    event:
+        Event name, e.g. ``"git"`` or ``"virtualenv"``.
+    status:
+        Status string such as ``"success"`` or ``"error"``.
+    message:
+        Human readable message describing the event.
+    data:
+        Optional payload with additional information.
+    error_code:
+        Optional error code when ``status`` represents a failure.
+    """
+
+    obj: Dict[str, Any] = {
         "event": event,
         "status": status,
         "message": message,
         "data": data or {},
-        "ts": datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
+        "ts": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
     if error_code:
         obj["error_code"] = error_code
