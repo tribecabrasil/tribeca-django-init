@@ -1,7 +1,7 @@
 [project]
 name = "tribeca_django_init"
 version = "0.1.0"
-description = "CLI para bootstrap de projetos Django seguindo convenções profissionais."
+description = "CLI to bootstrap Django projects following professional conventions."
 authors = [{name="Flavio Paulino", email="dev@tribecadigital.com.br"}]
 dependencies = ["click"]
 
