@@ -1,7 +1,6 @@
 """Utility functions and shared logic for both CLI interfaces (user and MCP).
-
-Whenever a command is added or modified, ensure ``cli_user.py`` and ``cli_mcp.py``
-remain compatible with the same API and semantics.
+Whenever a command is added or modified, ensure ``cli_user.py`` and
+``cli_mcp.py`` remain compatible with the same API and semantics.
 """
 
 import json

@@ -7,8 +7,8 @@ def print_install_success() -> None:
     print(
         """
 🎉 Tribeca Django Init successfully installed! 🎉
-You can now use the interactive CLI to bootstrap Django projects
-with modern best practices.
+You can now use the interactive CLI to bootstrap Django projects with modern
+best practices.
 
 🚀 To get started, run:
 
