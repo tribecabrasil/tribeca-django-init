@@ -2,14 +2,13 @@
 Always keep command compatibility and semantics in sync with ``cli_mcp.py``.
 """
 
-import os
 from pathlib import Path
-from shutil import copyfile
-
 import click
-
 from init_django import print_install_success
 from init_django.cli_common import TEMPLATES_DIR, run
+
+import os
+from shutil import copyfile
 
 
 @click.command()
