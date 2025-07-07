@@ -17,4 +17,3 @@ if __name__ == "__main__":
     else:
         from .cli_user import main
     main()
-
