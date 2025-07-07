@@ -1,6 +1,5 @@
-"""
-Interface CLI tradicional (usuário humano, prompts interativos).
-Sempre mantenha compatibilidade de comandos e semântica com cli_mcp.py.
+"""Traditional CLI interface for human users with interactive prompts.
+Always keep command compatibility and semantics in sync with ``cli_mcp.py``.
 """
 import sys
 from pathlib import Path
@@ -12,13 +11,11 @@ from shutil import copyfile
 
 @click.command()
 def main():
-    """
-    CLI interativo para bootstrap de projetos Django seguindo convenções profissionais.
-    """
+    """Interactive CLI to bootstrap Django projects following best practices."""
     print_install_success()
     base = Path.cwd()
     venv = base / ".venv"
-    click.echo("\nTribeca Django Init — Bootstrap interativo Django\n")
+    click.echo("\nTribeca Django Init — Interactive Django Bootstrap\n")
 
     # 1️⃣ Virtual environment
     click.echo("\n🌱  Step 1: Virtual Environment Setup")
@@ -87,7 +84,7 @@ def main():
 
     # 3. Git
     if (base / ".git").exists():
-        click.echo("Repositório Git já inicializado.")
+        click.echo("Git repository already initialized.")
     else:
         git_choice = click.prompt(
             "3️⃣  Git repository setup\n1\u20e3  Initialize git repository\n2\u20e3  Skip this step\nEnter your choice:",
@@ -101,9 +98,9 @@ def main():
         else:
             click.echo("Skipping git initialization.")
 
-    # 4. Projeto Django
+    # 4. Django project
     if (base / "manage.py").exists():
-        click.echo("Projeto Django já existe nesta pasta.")
+        click.echo("Django project already exists in this folder.")
     else:
         proj_choice = click.prompt(
             "4️⃣  Django project setup\n1\u20e3  Create Django project (config)\n2\u20e3  Skip this step\nEnter your choice:",
@@ -116,11 +113,11 @@ def main():
             req_target = base / "requirements.txt"
             if req_tpl.exists() and not req_target.exists():
                 copyfile(req_tpl, req_target)
-                click.echo("requirements.txt criado a partir do template.")
+                click.echo("requirements.txt created from template.")
 
             settings_dir = base / "config" / "settings"
             if settings_dir.exists():
-                click.echo("Pacote de settings já existe.")
+                click.echo("Settings package already exists.")
             else:
                 settings_choice = click.prompt(
                     "5️⃣  Settings package setup\n1️⃣  Create settings package (config/settings)\n2️⃣  Skip this step\nEnter your choice:",
@@ -140,9 +137,9 @@ def main():
                 else:
                     click.echo("Skipping settings package creation.")
 
-            app_name = click.prompt("Nome do primeiro app (ex: users)", default="users")
+            app_name = click.prompt("Name of the first app (e.g., users)", default="users")
             if (base / app_name).exists():
-                click.echo(f"App '{app_name}' já existe.")
+                click.echo(f"App '{app_name}' already exists.")
             else:
                 app_choice = click.prompt(
                     f"6️⃣  App creation\n1️⃣  Create app '{app_name}'\n2️⃣  Skip this step\nEnter your choice:",
@@ -164,11 +161,11 @@ def main():
                     click.echo(f"Skipping creation of app '{app_name}'.")
 
             if (base / "README.md").exists():
-                click.echo("README.md já existe.")
+                click.echo("README.md already exists.")
             else:
                 copyfile(TEMPLATES_DIR / "readme.md.tpl", base / "README.md")
-                click.echo("README.md criado a partir do template.")
+                click.echo("README.md created from template.")
         else:
             click.echo("Skipping Django project creation.")
 
-    click.echo(f"\n✅ Projeto inicializado/interativo concluído em {base.resolve()}\n")
+    click.echo(f"\n✅ Project initialization/interactive flow completed in {base.resolve()}\n")

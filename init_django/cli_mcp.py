@@ -1,6 +1,5 @@
-"""
-Interface CLI para MCPs/agentes (modo não-interativo, argumentos/flags, saída JSON).
-Sempre mantenha compatibilidade de comandos e semântica com cli_user.py.
+"""CLI interface for MCPs/agents (non-interactive, arguments/flags, JSON output).
+Always keep command compatibility and semantics in sync with ``cli_user.py``.
 """
 import sys
 from pathlib import Path
@@ -23,14 +22,12 @@ from shutil import copyfile
 @click.option('--migrate', type=click.Choice(['yes', 'no']), default=None)
 @click.option('--readme', type=click.Choice(['yes', 'no']), default=None)
 def main(json_mode, venv, install_deps, django_version, git_init, project, settings, app_name, app_create, migrate, readme):
-    """
-    CLI MCP/Agente: modo não-interativo, argumentos/flags, saída JSON.
-    """
+    """MCP/agent CLI: non-interactive, argument-driven, emits JSON."""
     try:
         print_install_success()
         base = Path.cwd()
         venv_path = base / ".venv"
-        emit_json_event("start", "success", "Bootstrap iniciado", {"cwd": str(base)})
+        emit_json_event("start", "success", "Bootstrap started", {"cwd": str(base)})
 
         # 1️⃣ Virtual environment
         venv_action = venv or 'reuse' if venv_path.exists() else 'recreate'
@@ -76,7 +73,7 @@ def main(json_mode, venv, install_deps, django_version, git_init, project, setti
         else:
             emit_json_event("git", "skipped", "Git initialization skipped", {})
 
-        # 4. Projeto Django
+        # 4. Django project
         if (base / "manage.py").exists():
             emit_json_event("project", "success", "Django project already exists", {})
         elif project == 'yes':
@@ -125,7 +122,7 @@ def main(json_mode, venv, install_deps, django_version, git_init, project, setti
                 emit_json_event("readme", "skipped", "Skipped README creation", {})
         else:
             emit_json_event("project", "skipped", "Skipped Django project creation", {})
-        emit_json_event("done", "success", "Projeto inicializado/interativo concluído", {"project_root": str(base.resolve())})
+        emit_json_event("done", "success", "Project initialization/interactive flow completed", {"project_root": str(base.resolve())})
     except Exception as e:
         import traceback
         emit_json_event("error", "error", f"Error: {e}", {"traceback": traceback.format_exc()}, error_code="UNHANDLED_EXCEPTION")
