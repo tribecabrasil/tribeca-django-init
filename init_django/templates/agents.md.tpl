@@ -146,7 +146,7 @@ class MyModelViewSet(viewsets.ModelViewSet):
 - Use Flower for monitoring.
 - Write tests for asynchronous tasks.
 
-Exemplo de task Celery:
+Celery task example:
 
 ```python
 from celery import shared_task

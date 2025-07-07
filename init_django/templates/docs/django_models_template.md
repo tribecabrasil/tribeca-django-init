@@ -71,13 +71,13 @@ class Setting(models.Model):
     """
     System configuration for the accounts app.
     """
-    ref = models.CharField(max_length=50, unique=True, verbose_name='Referência')
-    description = models.TextField(verbose_name='Descrição')
-    val = models.TextField(null=True, blank=True, verbose_name='Valor')
+    ref = models.CharField(max_length=50, unique=True, verbose_name='Reference')
+    description = models.TextField(verbose_name='Description')
+    val = models.TextField(null=True, blank=True, verbose_name='Value')
 
     class Meta:
-        verbose_name = 'Configuração Accounts'
-        verbose_name_plural = 'Configurações Accounts'
+        verbose_name = 'Accounts Setting'
+        verbose_name_plural = 'Accounts Settings'
         ordering = ['description']
 
     def __str__(self):
@@ -114,13 +114,13 @@ class SettingWebsite(models.Model):
     """
     System configuration for the website app.
     """
-    ref = models.CharField(max_length=50, unique=True, verbose_name='Referência')
-    description = models.TextField(verbose_name='Descrição')
-    val = models.TextField(null=True, blank=True, verbose_name='Valor')
+    ref = models.CharField(max_length=50, unique=True, verbose_name='Reference')
+    description = models.TextField(verbose_name='Description')
+    val = models.TextField(null=True, blank=True, verbose_name='Value')
 
     class Meta:
-        verbose_name = 'Configuração Website'
-        verbose_name_plural = 'Configurações Website'
+        verbose_name = 'Website Setting'
+        verbose_name_plural = 'Website Settings'
         ordering = ['description']
 
     def __str__(self):
