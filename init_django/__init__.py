@@ -1,4 +1,6 @@
-# CLI init_django
+"""Utility helpers for the Tribeca Django Init package."""
+
+# CLI entry point helpers
 
 
 def print_install_success() -> None:

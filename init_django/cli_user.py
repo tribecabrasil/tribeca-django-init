@@ -2,14 +2,24 @@
 Always keep command compatibility and semantics in sync with ``cli_mcp.py``.
 """
 
-import os
 from pathlib import Path
 from shutil import copyfile
 
 import click
 
 from init_django import print_install_success
-from init_django.cli_common import TEMPLATES_DIR, run
+from init_django.cli_common import (
+    TEMPLATES_DIR,
+    apply_migrations,
+    create_app,
+    create_readme,
+    create_settings_package,
+    create_virtualenv,
+    initialize_git,
+    install_dependencies,
+    run,
+    start_django_project,
+)
 
 
 @click.command()
@@ -34,8 +44,7 @@ def main() -> None:
             click.echo("Using existing .venv.")
         elif venv_choice == "2":
             run("rm -rf .venv")
-            run("python3 -m venv .venv")
-            run(f"{venv}/bin/pip install --upgrade pip wheel")
+            create_virtualenv(venv)
         else:
             click.echo("Skipping virtual environment setup.")
     else:
@@ -46,8 +55,7 @@ def main() -> None:
             default="1",
         )
         if create_venv == "1":
-            run("python3 -m venv .venv")
-            run(f"{venv}/bin/pip install --upgrade pip wheel")
+            create_virtualenv(venv)
         else:
             click.echo("Skipping virtual environment setup.")
 
@@ -76,15 +84,7 @@ def main() -> None:
         except Exception:
             click.echo("⚠️  Invalid Django version. Using default 5.2.3.")
             django_version = "5.2.3"
-        if "." in django_version and django_version.count(".") == 2:
-            django_spec = f"django=={django_version}"
-        else:
-            django_spec = f"django~={django_version}"
-        run(
-            f"{venv}/bin/pip install '{django_spec}' "
-            "djangorestframework django-environ psycopg[binary] "
-            "gunicorn whitenoise pytest-django black isort pre-commit"
-        )
+        install_dependencies(venv, django_version)
     else:
         click.echo("Skipping dependency installation.")
 
@@ -99,13 +99,7 @@ def main() -> None:
             default="1",
         )
         if git_choice == "1":
-            run("git init")
-            run(
-                "curl -O "
-                "https://raw.githubusercontent.com/github/gitignore/main/"
-                "Python.gitignore"
-            )
-            run("git add . && git commit -m 'bootstrap'")
+            initialize_git()
         else:
             click.echo("Skipping git initialization.")
 
@@ -120,7 +114,7 @@ def main() -> None:
             default="1",
         )
         if proj_choice == "1":
-            run(f"{venv}/bin/django-admin startproject config .")
+            start_django_project(venv, base)
             req_tpl = TEMPLATES_DIR / "requirements.txt"
             req_target = base / "requirements.txt"
             if req_tpl.exists() and not req_target.exists():
@@ -139,20 +133,7 @@ def main() -> None:
                     default="1",
                 )
                 if settings_choice == "1":
-                    os.makedirs(settings_dir)
-                    for fname in ["base.py", "dev.py", "prod.py"]:
-                        copyfile(
-                            TEMPLATES_DIR / "settings" / f"{fname}.tpl",
-                            settings_dir / fname,
-                        )
-                    with open(settings_dir / "__init__.py", "w") as fh:
-                        fh.write("from .dev import *  # default to dev")
-                    with open(base / "config" / "wsgi.py", "r+") as fh:
-                        content = fh.read()
-                        fh.seek(0)
-                        fh.write(
-                            content.replace("config.settings", "config.settings.dev")
-                        )
+                    create_settings_package(base)
                 else:
                     click.echo("Skipping settings package creation.")
 
@@ -169,7 +150,7 @@ def main() -> None:
                     default="1",
                 )
                 if app_choice == "1":
-                    run(f"{venv}/bin/python manage.py startapp {app_name}")
+                    create_app(venv, app_name)
                     migrations_choice = click.prompt(
                         "7️⃣  Run migrations\n1️⃣  Run initial migrations\n"
                         "2️⃣  Skip this step\nEnter your choice:",
@@ -177,7 +158,7 @@ def main() -> None:
                         default="1",
                     )
                     if migrations_choice == "1":
-                        run(f"{venv}/bin/python manage.py migrate")
+                        apply_migrations(venv)
                     else:
                         click.echo("Skipping migrations.")
                 else:
@@ -186,7 +167,7 @@ def main() -> None:
             if (base / "README.md").exists():
                 click.echo("README.md already exists.")
             else:
-                copyfile(TEMPLATES_DIR / "readme.md.tpl", base / "README.md")
+                create_readme(base)
                 click.echo("README.md created from template.")
         else:
             click.echo("Skipping Django project creation.")

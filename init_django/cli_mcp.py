@@ -2,7 +2,6 @@
 Always keep command compatibility and semantics in sync with ``cli_user.py``.
 """
 
-import os
 import sys
 from pathlib import Path
 from shutil import copyfile
@@ -11,7 +10,19 @@ from typing import Optional
 import click
 
 from init_django import print_install_success
-from init_django.cli_common import TEMPLATES_DIR, emit_json_event, run
+from init_django.cli_common import (
+    TEMPLATES_DIR,
+    apply_migrations,
+    create_app,
+    create_readme,
+    create_settings_package,
+    create_virtualenv,
+    emit_json_event,
+    initialize_git,
+    install_dependencies,
+    run,
+    start_django_project,
+)
 
 
 @click.command()
@@ -62,8 +73,7 @@ def main(
             )
         elif venv_action == "recreate":
             run("rm -rf .venv")
-            run("python3 -m venv .venv")
-            run(f"{venv_path}/bin/pip install --upgrade pip wheel")
+            create_virtualenv(venv_path)
             emit_json_event(
                 "virtualenv", "success", ".venv recreated", {"path": str(venv_path)}
             )
@@ -94,15 +104,7 @@ def main(
                     {},
                 )
                 dj_version = "5.2.3"
-            if "." in dj_version and dj_version.count(".") == 2:
-                django_spec = f"django=={dj_version}"
-            else:
-                django_spec = f"django~={dj_version}"
-            run(
-                f"{venv_path}/bin/pip install '{django_spec}' "
-                "djangorestframework django-environ psycopg[binary] "
-                "gunicorn whitenoise pytest-django black isort pre-commit"
-            )
+            install_dependencies(venv_path, dj_version)
             emit_json_event(
                 "dependencies",
                 "success",
@@ -118,13 +120,7 @@ def main(
         if (base / ".git").exists():
             emit_json_event("git", "success", "Git repository already initialized", {})
         elif git_init == "yes":
-            run("git init")
-            run(
-                "curl -O "
-                "https://raw.githubusercontent.com/github/gitignore/main/"
-                "Python.gitignore"
-            )
-            run("git add . && git commit -m 'bootstrap'")
+            initialize_git()
             emit_json_event("git", "success", "Git initialized", {})
         else:
             emit_json_event("git", "skipped", "Git initialization skipped", {})
@@ -133,7 +129,7 @@ def main(
         if (base / "manage.py").exists():
             emit_json_event("project", "success", "Django project already exists", {})
         elif project == "yes":
-            run(f"{venv_path}/bin/django-admin startproject config .")
+            start_django_project(venv_path, base)
             req_tpl = TEMPLATES_DIR / "requirements.txt"
             req_target = base / "requirements.txt"
             if req_tpl.exists() and not req_target.exists():
@@ -153,18 +149,7 @@ def main(
                     {"path": str(settings_dir)},
                 )
             elif settings == "yes":
-                os.makedirs(settings_dir)
-                for fname in ["base.py", "dev.py", "prod.py"]:
-                    copyfile(
-                        TEMPLATES_DIR / "settings" / f"{fname}.tpl",
-                        settings_dir / fname,
-                    )
-                with open(settings_dir / "__init__.py", "w") as fh:
-                    fh.write("from .dev import *  # default to dev")
-                with open(base / "config" / "wsgi.py", "r+") as fh:
-                    content = fh.read()
-                    fh.seek(0)
-                    fh.write(content.replace("config.settings", "config.settings.dev"))
+                create_settings_package(base)
                 emit_json_event(
                     "settings",
                     "success",
@@ -182,9 +167,9 @@ def main(
                     "app", "success", f"App '{app}' already exists", {"name": app}
                 )
             elif app_create == "yes":
-                run(f"{venv_path}/bin/python manage.py startapp {app}")
+                create_app(venv_path, app)
                 if migrate == "yes":
-                    run(f"{venv_path}/bin/python manage.py migrate")
+                    apply_migrations(venv_path)
                     emit_json_event(
                         "migrations", "success", "Initial migrations applied", {}
                     )
@@ -198,7 +183,7 @@ def main(
             if (base / "README.md").exists():
                 emit_json_event("readme", "success", "README.md already exists", {})
             elif readme == "yes":
-                copyfile(TEMPLATES_DIR / "readme.md.tpl", base / "README.md")
+                create_readme(base)
                 emit_json_event(
                     "readme",
                     "success",

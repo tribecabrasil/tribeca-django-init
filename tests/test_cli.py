@@ -1,3 +1,5 @@
+"""Integration tests for the Tribeca Django Init CLI interfaces."""
+
 import json
 import os
 import shutil
@@ -16,6 +18,7 @@ from init_django.cli_user import main  # noqa: E402
 
 @pytest.fixture
 def temp_project_dir():
+    """Create a temporary working directory for CLI tests."""
     d = tempfile.mkdtemp(prefix="tribeca_cli_test_")
     cwd = os.getcwd()
     os.chdir(d)
