@@ -82,6 +82,7 @@ tribeca-django-init ... --json
 ### 5. Integration Best Practices
 - Recommendations for safe integration in pipelines
 - Suggested patterns for responses and error handling
+- CI pipelines run `pre-commit run --all-files` to enforce consistent code style
 
 ---
 
