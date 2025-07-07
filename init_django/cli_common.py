@@ -119,10 +119,38 @@ def initialize_git() -> None:
     run("git add . && git commit -m 'bootstrap'")
 
 
-def start_django_project(venv_path: Path, base: Path) -> None:
-    """Create the base Django project in ``base`` using ``venv_path``."""
+def start_django_project(venv_path: Path, base: Path, json_mode: bool = False) -> None:
+    """Create the base Django project in ``base`` using ``venv_path``.
 
-    run(f"{venv_path}/bin/django-admin startproject config .")
+    Parameters
+    ----------
+    venv_path:
+        The virtualenv that should contain ``django-admin``.
+    base:
+        Directory where the project will be created.
+    json_mode:
+        Emit a JSON event instead of printing when ``True``.
+    """
+
+    django_admin = venv_path / "bin" / "django-admin"
+    if not django_admin.exists():
+        msg = (
+            f"django-admin not found in {venv_path}. "
+            "Install dependencies first."
+        )
+        if json_mode:
+            emit_json_event(
+                "project",
+                "error",
+                msg,
+                {"venv": str(venv_path)},
+                error_code="DJANGO_ADMIN_MISSING",
+            )
+        else:
+            click.echo(f"❌ {msg}")
+        raise click.ClickException(msg)
+
+    run(f"{django_admin} startproject config .")
 
 
 def create_settings_package(base: Path) -> None:

@@ -134,3 +134,53 @@ def test_cli_mcp_json_output(temp_project_dir):
     json_lines = [json.loads(line) for line in lines if line.startswith("{")]
     events = [j.get("event") for j in json_lines]
     assert "done" in events
+
+
+def test_cli_requires_dependencies_user(temp_project_dir, monkeypatch):
+    """Creating a project without installing dependencies should fail."""
+    runner = CliRunner()
+    inputs = [
+        "1",  # create venv
+        "2",  # skip dependencies
+        "2",  # skip git
+        "1",  # attempt project creation
+    ]
+    monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
+    result = runner.invoke(main, input="\n".join(inputs) + "\n")
+    assert result.exit_code != 0
+    assert "django-admin not found" in result.output
+
+
+def test_cli_requires_dependencies_mcp(temp_project_dir):
+    """MCP mode should emit an error event when django-admin is missing."""
+    runner = CliRunner()
+    result = runner.invoke(
+        mcp_main,
+        [
+            "--json",
+            "--venv",
+            "recreate",
+            "--install-deps",
+            "no",
+            "--git-init",
+            "no",
+            "--project",
+            "yes",
+            "--settings",
+            "no",
+            "--app-name",
+            "users",
+            "--app-create",
+            "no",
+            "--migrate",
+            "no",
+            "--readme",
+            "no",
+        ],
+    )
+    assert result.exit_code != 0
+    lines = result.output.splitlines()
+    json_lines = [json.loads(line) for line in lines if line.startswith("{")]
+    project_errors = [j for j in json_lines if j.get("event") == "project" and j.get("status") == "error"]
+    assert project_errors
+    assert "Install dependencies first" in project_errors[0]["message"]
