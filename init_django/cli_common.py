@@ -111,11 +111,9 @@ def initialize_git() -> None:
     """Initialize a git repository with a standard Python ``.gitignore``."""
 
     run("git init")
-    run(
-        "curl -O "
-        "https://raw.githubusercontent.com/github/gitignore/main/"
-        "Python.gitignore"
-    )
+    gitignore_src = TEMPLATES_DIR / "Python.gitignore"
+    if gitignore_src.exists():
+        copyfile(gitignore_src, "Python.gitignore")
     run("git add . && git commit -m 'bootstrap'")
 
 

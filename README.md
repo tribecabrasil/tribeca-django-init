@@ -139,6 +139,7 @@ config/
 manage.py
 .venv/
 .git/
+Python.gitignore  # from init_django/templates/Python.gitignore
 README.md
 .env  # Your environment variables (see .env.example)
 ```
@@ -164,6 +165,7 @@ README.md
 - Interactive, emoji-powered CLI
 - Detects and reuses existing resources
 - Modern, production-ready Django setup
+- Local Python.gitignore template for Git initialization
 - DRF and quality tools included by default
 - All docs, templates, and code in English
 - Ready for CI/CD and cloud deployment
