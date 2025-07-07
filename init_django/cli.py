@@ -5,6 +5,7 @@ The module detects whether automation (MCP) mode is requested via the
 ``cli_user.py`` and ``cli_mcp.py`` synchronized so they support the same
 commands and semantics.
 """
+
 import sys
 
 if __name__ == "__main__":
