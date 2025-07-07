@@ -1,14 +1,17 @@
 import json
 import os
 import shutil
+import sys
 import tempfile
 from pathlib import Path
 
-import pytest
-from click.testing import CliRunner
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from init_django.cli_mcp import main as mcp_main
-from init_django.cli_user import main
+import pytest  # noqa: E402
+from click.testing import CliRunner  # noqa: E402
+
+from init_django.cli_mcp import main as mcp_main  # noqa: E402
+from init_django.cli_user import main  # noqa: E402
 
 
 @pytest.fixture
