@@ -63,20 +63,20 @@ Sample JSON output:
 - Use the JSON mode for all agent, MCP, or CI/CD integrations.
 - See `docs/mcps_documentation.md` for advanced integration and event schema.
 
-## Integração com MCPs (Multi-Component Platforms/AI agents)
+## MCP Integration (Multi-Component Platforms/AI agents)
 
-O CLI Tribeca Django Init está sendo planejado para uso facilitado por agentes inteligentes e automação. Veja detalhes, exemplos e melhores práticas em [`docs/mcps_documentation.md`](docs/mcps_documentation.md).
+The Tribeca Django Init CLI is being designed for streamlined use by intelligent agents and automation. See details, examples, and best practices in [`docs/mcps_documentation.md`](docs/mcps_documentation.md).
 
 ## Settings Templates Architecture (2025)
 
-- **Motivação:** Para garantir clareza, manutenção e alinhamento com as melhores práticas Django, os templates de settings agora ficam em `init_django/templates/settings/`.
-- **Arquivos:**
-  - `base.py.tpl`, `dev.py.tpl`, `prod.py.tpl` (geram os arquivos finais em `config/settings/`)
-- **Vantagens:**
-  - Facilita a busca e manutenção dos templates.
-  - Permite adicionar outros templates de settings ou ambientes facilmente.
-  - Fica alinhado com o padrão Django e projetos modernos.
-  - Torna o fluxo do CLI e a documentação mais previsíveis para humanos e IAs.
+- **Motivation:** To ensure clarity, maintainability, and alignment with Django best practices, the settings templates now reside in `init_django/templates/settings/`.
+- **Files:**
+  - `base.py.tpl`, `dev.py.tpl`, `prod.py.tpl` (generate the final files in `config/settings/`)
+- **Advantages:**
+  - Makes it easy to locate and maintain the templates.
+  - Allows other settings templates or environments to be added easily.
+  - Aligns with the Django standard and modern projects.
+  - Makes the CLI flow and documentation more predictable for humans and AIs.
 
 ## Example of Update Log
 

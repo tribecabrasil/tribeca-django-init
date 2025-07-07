@@ -1,6 +1,5 @@
-"""
-Funções utilitárias e lógica compartilhada entre interfaces CLI (usuário e MCP).
-Sempre que um comando for adicionado ou alterado, garanta que ambos cli_user.py e cli_mcp.py estejam compatíveis com a mesma API e semântica.
+"""Utility functions and shared logic for both CLI interfaces (user and MCP).
+Whenever a command is added or modified, ensure ``cli_user.py`` and ``cli_mcp.py`` remain compatible with the same API and semantics.
 """
 import os
 import subprocess
@@ -80,4 +79,4 @@ def emit_json_event(
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
-# Outras funções utilitárias compartilhadas podem ser adicionadas aqui.
+# Additional shared utility functions can be added here.
