@@ -129,7 +129,7 @@ def main(
         if (base / "manage.py").exists():
             emit_json_event("project", "success", "Django project already exists", {})
         elif project == "yes":
-            start_django_project(venv_path, base)
+            start_django_project(venv_path, base, json_mode=json_mode)
             req_tpl = TEMPLATES_DIR / "requirements.txt"
             req_target = base / "requirements.txt"
             if req_tpl.exists() and not req_target.exists():
