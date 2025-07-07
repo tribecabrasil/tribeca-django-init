@@ -10,3 +10,6 @@ init-django = "init_django.cli:main"
 
 [tool.pip.install]
 post-install = "scripts/post_install.py"
+
+[tool.flake8]
+max-line-length = 88
