@@ -85,6 +85,7 @@ tribeca-django-init ... --json
 ### 5. Boas Práticas de Integração
 - Recomendações para integração segura e previsível em pipelines
 - Sugestão de padrões de resposta e tratamento de erros
+- CI pipelines run `pre-commit run --all-files` to enforce consistent code style
 
 ---
 
