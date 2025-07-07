@@ -42,6 +42,7 @@ def test_cli_basic_flow(temp_project_dir, monkeypatch):
         "users",  # App name
         "1",  # Create app
         "1",  # Apply migrations
+        "1",  # Create .env file
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
@@ -54,6 +55,7 @@ def test_cli_basic_flow(temp_project_dir, monkeypatch):
     assert (temp_project_dir / "config" / "settings" / "base.py").exists()
     assert (temp_project_dir / "config" / "settings" / "dev.py").exists()
     assert (temp_project_dir / "config" / "settings" / "prod.py").exists()
+    assert (temp_project_dir / ".env").exists()
 
 
 def test_cli_skip_steps(temp_project_dir, monkeypatch):
@@ -70,6 +72,7 @@ def test_cli_skip_steps(temp_project_dir, monkeypatch):
         "users",  # App name
         "2",  # Skip app
         "2",  # Skip migrations
+        "2",  # Skip .env file
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
@@ -93,6 +96,7 @@ def test_cli_custom_app_name(temp_project_dir, monkeypatch):
         app_name,  # app name
         "1",  # create app
         "1",  # migrations
+        "1",  # create .env file
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
@@ -100,6 +104,7 @@ def test_cli_custom_app_name(temp_project_dir, monkeypatch):
     assert (temp_project_dir / app_name).exists() or (
         temp_project_dir / f"{app_name}"
     ).exists()
+    assert (temp_project_dir / ".env").exists()
 
 
 def test_cli_mcp_json_output(temp_project_dir):
@@ -126,6 +131,8 @@ def test_cli_mcp_json_output(temp_project_dir):
             "--migrate",
             "no",
             "--readme",
+            "no",
+            "--env-file",
             "no",
         ],
     )
@@ -175,6 +182,8 @@ def test_cli_requires_dependencies_mcp(temp_project_dir):
             "--migrate",
             "no",
             "--readme",
+            "no",
+            "--env-file",
             "no",
         ],
     )

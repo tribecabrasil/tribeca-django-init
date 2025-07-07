@@ -182,3 +182,12 @@ def create_readme(base: Path) -> None:
     """Create ``README.md`` from the packaged template."""
 
     copyfile(TEMPLATES_DIR / "readme.md.tpl", base / "README.md")
+
+
+def create_env_file(base: Path) -> None:
+    """Copy ``.env.example`` to ``.env`` in ``base`` if missing."""
+
+    src = TEMPLATES_DIR / ".env.example"
+    dest = base / ".env"
+    if not dest.exists() and src.exists():
+        copyfile(src, dest)
