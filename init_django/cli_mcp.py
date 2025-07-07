@@ -2,14 +2,15 @@
 Always keep command compatibility and semantics in sync with ``cli_user.py``.
 """
 
-from pathlib import Path
-import click
-from init_django import print_install_success
-from init_django.cli_common import TEMPLATES_DIR, emit_json_event, run
-
 import os
 import sys
+from pathlib import Path
 from shutil import copyfile
+
+import click
+
+from init_django import print_install_success
+from init_django.cli_common import TEMPLATES_DIR, emit_json_event, run
 
 
 @click.command()
