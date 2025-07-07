@@ -93,8 +93,13 @@ The Tribeca Django Init CLI is being designed for streamlined use by intelligent
 - All documentation and templates are now in English
 - Docs folder standardized: api_documentation.md, architecture_blueprint.md, django_models_template.md
 - README and AGENTS.md reference all docs and explain project standards
+
+## [2025-06-26] Unified Development & Operations Guide Added
+- Added `docs/unified_dev_ops_guide.md` consolidating shell, Python/Django and CI/CD practices.
+- Referenced the new guide in README and this AGENTS file.
 ```
 
 ## References
 - Always keep this file and the README.md up to date with any relevant change.
 - For detailed technical standards, see the files in `docs/`.
+- See [`docs/unified_dev_ops_guide.md`](docs/unified_dev_ops_guide.md) for the unified development and operations standards.
