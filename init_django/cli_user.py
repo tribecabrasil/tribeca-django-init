@@ -2,12 +2,14 @@
 Always keep command compatibility and semantics in sync with ``cli_mcp.py``.
 """
 
-from pathlib import Path
-import click
-from init_django.cli_common import run, TEMPLATES_DIR
-from init_django import print_install_success
 import os
+from pathlib import Path
 from shutil import copyfile
+
+import click
+
+from init_django import print_install_success
+from init_django.cli_common import TEMPLATES_DIR, run
 
 
 @click.command()
@@ -38,9 +40,7 @@ def main():
             click.echo("Skipping virtual environment setup.")
     else:
         create_venv = click.prompt(
-            "🌱 .venv not found.\n"
-            "1\u20e3  Create new .venv\n"
-            "2\u20e3  Skip this step\n"
+            "🌱 .venv not found.\n1\u20e3  Create new .venv\n2\u20e3  Skip this step\n"
             "Enter your choice:",
             type=click.Choice(["1", "2"]),
             default="1",
@@ -70,7 +70,7 @@ def main():
             major = int(parts[0])
             if major < 3:
                 click.echo(
-                    "⚠️  Django version too old or invalid. Using default 5.2.3."
+                    "⚠️  Django version too old or invalid. " "Using default 5.2.3."
                 )
                 django_version = "5.2.3"
         except Exception:
@@ -80,12 +80,11 @@ def main():
             django_spec = f"django=={django_version}"
         else:
             django_spec = f"django~={django_version}"
-        cmd = (
+        run(
             f"{venv}/bin/pip install '{django_spec}' "
             "djangorestframework django-environ psycopg[binary] "
             "gunicorn whitenoise pytest-django black isort pre-commit"
         )
-        run(cmd)
     else:
         click.echo("Skipping dependency installation.")
 
@@ -94,18 +93,17 @@ def main():
         click.echo("Git repository already initialized.")
     else:
         git_choice = click.prompt(
-            "3️⃣  Git repository setup\n"
-            "1\u20e3  Initialize git repository\n"
-            "2\u20e3  Skip this step\n"
-            "Enter your choice:",
+            "3️⃣  Git repository setup\n1\u20e3  Initialize git repository\n"
+            "2\u20e3  Skip this step\nEnter your choice:",
             type=click.Choice(["1", "2"]),
             default="1",
         )
         if git_choice == "1":
             run("git init")
             run(
-                "curl -O https://raw.githubusercontent.com/"
-                "github/gitignore/main/Python.gitignore"
+                "curl -O "
+                "https://raw.githubusercontent.com/github/gitignore/main/"
+                "Python.gitignore"
             )
             run("git add . && git commit -m 'bootstrap'")
         else:
@@ -116,10 +114,8 @@ def main():
         click.echo("Django project already exists in this folder.")
     else:
         proj_choice = click.prompt(
-            "4️⃣  Django project setup\n"
-            "1\u20e3  Create Django project (config)\n"
-            "2\u20e3  Skip this step\n"
-            "Enter your choice:",
+            "4️⃣  Django project setup\n1\u20e3  Create Django project (config)\n"
+            "2\u20e3  Skip this step\nEnter your choice:",
             type=click.Choice(["1", "2"]),
             default="1",
         )
@@ -138,8 +134,7 @@ def main():
                 settings_choice = click.prompt(
                     "5️⃣  Settings package setup\n"
                     "1️⃣  Create settings package (config/settings)\n"
-                    "2️⃣  Skip this step\n"
-                    "Enter your choice:",
+                    "2️⃣  Skip this step\nEnter your choice:",
                     type=click.Choice(["1", "2"]),
                     default="1",
                 )
@@ -167,20 +162,16 @@ def main():
                 click.echo(f"App '{app_name}' already exists.")
             else:
                 app_choice = click.prompt(
-                    f"6️⃣  App creation\n"
-                    f"1️⃣  Create app '{app_name}'\n"
-                    "2️⃣  Skip this step\n"
-                    "Enter your choice:",
+                    f"6️⃣  App creation\n1️⃣  Create app '{app_name}'\n2️⃣  "
+                    "Skip this step\nEnter your choice:",
                     type=click.Choice(["1", "2"]),
                     default="1",
                 )
                 if app_choice == "1":
                     run(f"{venv}/bin/python manage.py startapp {app_name}")
                     migrations_choice = click.prompt(
-                        "7️⃣  Run migrations\n"
-                        "1️⃣  Run initial migrations\n"
-                        "2️⃣  Skip this step\n"
-                        "Enter your choice:",
+                        "7️⃣  Run migrations\n1️⃣  Run initial migrations\n"
+                        "2️⃣  Skip this step\nEnter your choice:",
                         type=click.Choice(["1", "2"]),
                         default="1",
                     )
@@ -200,6 +191,5 @@ def main():
             click.echo("Skipping Django project creation.")
 
     click.echo(
-        f"\n✅ Project initialization/interactive flow completed in "
-        f"{base.resolve()}\n"
+        f"\n✅ Project initialization/interactive flow completed in {base.resolve()}\n"
     )

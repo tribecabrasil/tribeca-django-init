@@ -2,13 +2,15 @@
 Always keep command compatibility and semantics in sync with ``cli_user.py``.
 """
 
+import os
 import sys
 from pathlib import Path
-import click
-from init_django.cli_common import run, emit_json_event, TEMPLATES_DIR
-from init_django import print_install_success
-import os
 from shutil import copyfile
+
+import click
+
+from init_django import print_install_success
+from init_django.cli_common import TEMPLATES_DIR, emit_json_event, run
 
 
 @click.command()
@@ -95,12 +97,11 @@ def main(
                 django_spec = f"django=={dj_version}"
             else:
                 django_spec = f"django~={dj_version}"
-            cmd = (
+            run(
                 f"{venv_path}/bin/pip install '{django_spec}' "
                 "djangorestframework django-environ psycopg[binary] "
                 "gunicorn whitenoise pytest-django black isort pre-commit"
             )
-            run(cmd)
             emit_json_event(
                 "dependencies",
                 "success",
@@ -118,8 +119,9 @@ def main(
         elif git_init == "yes":
             run("git init")
             run(
-                "curl -O https://raw.githubusercontent.com/"
-                "github/gitignore/main/Python.gitignore"
+                "curl -O "
+                "https://raw.githubusercontent.com/github/gitignore/main/"
+                "Python.gitignore"
             )
             run("git add . && git commit -m 'bootstrap'")
             emit_json_event("git", "success", "Git initialized", {})
