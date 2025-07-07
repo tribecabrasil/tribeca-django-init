@@ -1,17 +1,17 @@
-"""
-Entrypoint CLI para o Tribeca Django Init.
-Detecta modo MCP (argumentos/flags ou --json) e delega
-para a interface correta.
-Sempre mantenha cli_user.py e cli_mcp.py compatíveis
-com os mesmos comandos e semântica.
+"""Entry point for the Tribeca Django Init CLI.
+
+The module detects whether automation (MCP) mode is requested via the
+``--json`` flag and delegates to the appropriate interface. Keep
+``cli_user.py`` and ``cli_mcp.py`` synchronized so they support the same
+commands and semantics.
 """
 
 import sys
 
 if __name__ == "__main__":
-    # Detecta modo MCP (argumentos/flags ou --json)
+    # Detect MCP mode (arguments/flags or --json)
     use_json = any(a == "--json" for a in sys.argv)
-    # Pode ser expandido para detectar outros sinais de automação/MCP
+    # This can be expanded to detect other automation signals
     if use_json:
         from .cli_mcp import main
     else:
