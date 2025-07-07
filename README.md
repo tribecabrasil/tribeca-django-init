@@ -71,7 +71,21 @@ django, cli, bootstrap, automation, mcp, ai-agents, devops, ci-cd, rest-api, pro
 
 # Install in editable mode
  pip install -e .
+
+# Install and configure pre-commit hooks
+ pip install pre-commit black isort flake8
+pre-commit install
 ```
+
+### Using pre-commit
+
+Run all hooks on every file:
+
+```bash
+pre-commit run --all-files
+```
+
+The hooks will format and lint your code automatically before each commit.
 
 ---
 
