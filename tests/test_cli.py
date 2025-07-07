@@ -28,6 +28,7 @@ def temp_project_dir():
 
 
 def test_cli_basic_flow(temp_project_dir, monkeypatch):
+    """Verify that the CLI runs with defaults and creates key files."""
     runner = CliRunner()
     # Simulate user choices for all steps (choose defaults)
     inputs = [
@@ -56,6 +57,7 @@ def test_cli_basic_flow(temp_project_dir, monkeypatch):
 
 
 def test_cli_skip_steps(temp_project_dir, monkeypatch):
+    """Ensure skipping optional steps does not crash the CLI."""
     runner = CliRunner()
     # Simulate skipping venv and dependencies
     inputs = [
@@ -77,6 +79,7 @@ def test_cli_skip_steps(temp_project_dir, monkeypatch):
 
 
 def test_cli_custom_app_name(temp_project_dir, monkeypatch):
+    """Check that providing a custom app name creates that app."""
     runner = CliRunner()
     app_name = "customapp"
     inputs = [
@@ -100,6 +103,7 @@ def test_cli_custom_app_name(temp_project_dir, monkeypatch):
 
 
 def test_cli_mcp_json_output(temp_project_dir):
+    """Confirm MCP mode outputs JSON events including a final 'done'."""
     runner = CliRunner()
     result = runner.invoke(
         mcp_main,
