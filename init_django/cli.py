@@ -3,6 +3,7 @@ Entrypoint CLI para o Tribeca Django Init.
 Detecta modo MCP (argumentos/flags ou --json) e delega para a interface correta.
 Sempre mantenha cli_user.py e cli_mcp.py compatíveis com os mesmos comandos e semântica.
 """
+
 import sys
 
 if __name__ == "__main__":
