@@ -6,6 +6,7 @@ import os
 import sys
 from pathlib import Path
 from shutil import copyfile
+from typing import Optional
 
 import click
 
@@ -31,18 +32,18 @@ from init_django.cli_common import TEMPLATES_DIR, emit_json_event, run
 @click.option("--migrate", type=click.Choice(["yes", "no"]), default=None)
 @click.option("--readme", type=click.Choice(["yes", "no"]), default=None)
 def main(
-    json_mode,
-    venv,
-    install_deps,
-    django_version,
-    git_init,
-    project,
-    settings,
-    app_name,
-    app_create,
-    migrate,
-    readme,
-):
+    json_mode: bool,
+    venv: Optional[str],
+    install_deps: Optional[str],
+    django_version: Optional[str],
+    git_init: Optional[str],
+    project: Optional[str],
+    settings: Optional[str],
+    app_name: Optional[str],
+    app_create: Optional[str],
+    migrate: Optional[str],
+    readme: Optional[str],
+) -> None:
     """MCP/agent CLI: non-interactive, argument-driven, emits JSON."""
     try:
         print_install_success()
@@ -153,14 +154,17 @@ def main(
                 )
             elif settings == "yes":
                 os.makedirs(settings_dir)
-                for f in ["base.py", "dev.py", "prod.py"]:
-                    copyfile(TEMPLATES_DIR / "settings" / f"{f}.tpl", settings_dir / f)
-                with open(settings_dir / "__init__.py", "w") as f:
-                    f.write("from .dev import *  # default to dev")
-                with open(base / "config" / "wsgi.py", "r+") as f:
-                    content = f.read()
-                    f.seek(0)
-                    f.write(content.replace("config.settings", "config.settings.dev"))
+                for fname in ["base.py", "dev.py", "prod.py"]:
+                    copyfile(
+                        TEMPLATES_DIR / "settings" / f"{fname}.tpl",
+                        settings_dir / fname,
+                    )
+                with open(settings_dir / "__init__.py", "w") as fh:
+                    fh.write("from .dev import *  # default to dev")
+                with open(base / "config" / "wsgi.py", "r+") as fh:
+                    content = fh.read()
+                    fh.seek(0)
+                    fh.write(content.replace("config.settings", "config.settings.dev"))
                 emit_json_event(
                     "settings",
                     "success",

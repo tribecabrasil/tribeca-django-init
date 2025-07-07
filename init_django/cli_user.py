@@ -13,7 +13,7 @@ from init_django.cli_common import TEMPLATES_DIR, run
 
 
 @click.command()
-def main():
+def main() -> None:
     """Interactive CLI to bootstrap Django projects following best practices."""
     print_install_success()
     base = Path.cwd()
@@ -140,16 +140,17 @@ def main():
                 )
                 if settings_choice == "1":
                     os.makedirs(settings_dir)
-                    for f in ["base.py", "dev.py", "prod.py"]:
+                    for fname in ["base.py", "dev.py", "prod.py"]:
                         copyfile(
-                            TEMPLATES_DIR / "settings" / f"{f}.tpl", settings_dir / f
+                            TEMPLATES_DIR / "settings" / f"{fname}.tpl",
+                            settings_dir / fname,
                         )
-                    with open(settings_dir / "__init__.py", "w") as f:
-                        f.write("from .dev import *  # default to dev")
-                    with open(base / "config" / "wsgi.py", "r+") as f:
-                        content = f.read()
-                        f.seek(0)
-                        f.write(
+                    with open(settings_dir / "__init__.py", "w") as fh:
+                        fh.write("from .dev import *  # default to dev")
+                    with open(base / "config" / "wsgi.py", "r+") as fh:
+                        content = fh.read()
+                        fh.seek(0)
+                        fh.write(
                             content.replace("config.settings", "config.settings.dev")
                         )
                 else:
