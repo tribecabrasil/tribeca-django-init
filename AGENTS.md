@@ -97,6 +97,11 @@ The Tribeca Django Init CLI is being designed for streamlined use by intelligent
 ## [2025-06-26] Unified Development & Operations Guide Added
 - Added `docs/unified_dev_ops_guide.md` consolidating shell, Python/Django and CI/CD practices.
 - Referenced the new guide in README and this AGENTS file.
+
+## [2025-07-07] CLI Modularization Refactor
+- Extracted common CLI operations into new helper functions in `cli_common.py`.
+- Updated `cli_user.py` and `cli_mcp.py` to use these helpers for better modularization.
+- Added missing module and fixture docstrings across the project.
 ```
 
 ## References

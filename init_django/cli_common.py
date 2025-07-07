@@ -5,9 +5,11 @@ remain compatible with the same API and semantics.
 """
 
 import json
+import os
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
+from shutil import copyfile
 from typing import Any, Dict, Optional
 
 import click
@@ -83,4 +85,74 @@ def emit_json_event(
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
-# Additional shared utility functions can be added here.
+
+def create_virtualenv(venv_path: Path) -> None:
+    """Create a Python virtual environment and upgrade tooling."""
+
+    run(f"python3 -m venv {venv_path}")
+    run(f"{venv_path}/bin/pip install --upgrade pip wheel")
+
+
+def install_dependencies(venv_path: Path, django_version: str) -> None:
+    """Install Django and common packages into ``venv_path``."""
+
+    if "." in django_version and django_version.count(".") == 2:
+        django_spec = f"django=={django_version}"
+    else:
+        django_spec = f"django~={django_version}"
+    run(
+        f"{venv_path}/bin/pip install '{django_spec}' "
+        "djangorestframework django-environ psycopg[binary] "
+        "gunicorn whitenoise pytest-django black isort pre-commit"
+    )
+
+
+def initialize_git() -> None:
+    """Initialize a git repository with a standard Python ``.gitignore``."""
+
+    run("git init")
+    run(
+        "curl -O "
+        "https://raw.githubusercontent.com/github/gitignore/main/"
+        "Python.gitignore"
+    )
+    run("git add . && git commit -m 'bootstrap'")
+
+
+def start_django_project(venv_path: Path, base: Path) -> None:
+    """Create the base Django project in ``base`` using ``venv_path``."""
+
+    run(f"{venv_path}/bin/django-admin startproject config .")
+
+
+def create_settings_package(base: Path) -> None:
+    """Generate the ``config/settings`` package from templates."""
+
+    settings_dir = base / "config" / "settings"
+    os.makedirs(settings_dir, exist_ok=True)
+    for fname in ["base.py", "dev.py", "prod.py"]:
+        copyfile(TEMPLATES_DIR / "settings" / f"{fname}.tpl", settings_dir / fname)
+    with open(settings_dir / "__init__.py", "w") as fh:
+        fh.write("from .dev import *  # default to dev")
+    with open(base / "config" / "wsgi.py", "r+") as fh:
+        content = fh.read()
+        fh.seek(0)
+        fh.write(content.replace("config.settings", "config.settings.dev"))
+
+
+def create_app(venv_path: Path, app: str) -> None:
+    """Create a Django app named ``app`` using the given virtualenv."""
+
+    run(f"{venv_path}/bin/python manage.py startapp {app}")
+
+
+def apply_migrations(venv_path: Path) -> None:
+    """Apply initial Django migrations using ``venv_path``."""
+
+    run(f"{venv_path}/bin/python manage.py migrate")
+
+
+def create_readme(base: Path) -> None:
+    """Create ``README.md`` from the packaged template."""
+
+    copyfile(TEMPLATES_DIR / "readme.md.tpl", base / "README.md")
