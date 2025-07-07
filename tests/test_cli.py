@@ -1,13 +1,15 @@
+import json
 import os
 import shutil
 import tempfile
 from pathlib import Path
-from click.testing import CliRunner
-import pytest
 
-from init_django.cli_user import main
+import pytest
+from click.testing import CliRunner
+
 from init_django.cli_mcp import main as mcp_main
-import json
+from init_django.cli_user import main
+
 
 @pytest.fixture
 def temp_project_dir():
@@ -16,7 +18,7 @@ def temp_project_dir():
     os.chdir(d)
     yield Path(d)
     os.chdir(cwd)
-    shutil.rmtree(d)
+    shutil.rmtree(d, ignore_errors=True)
 
 
 def test_cli_basic_flow(temp_project_dir, monkeypatch):
@@ -25,20 +27,22 @@ def test_cli_basic_flow(temp_project_dir, monkeypatch):
     inputs = [
         "1",  # Reuse or create venv
         "1",  # Install dependencies
-        "",   # Django version (default)
+        "",  # Django version (default)
         "1",  # Initialize git
         "1",  # Create Django project
         "1",  # Create settings package
         # Only after settings prompt is complete, send app name:
         "users",  # App name
         "1",  # Create app
-        "1"   # Apply migrations
+        "1",  # Apply migrations
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
-    assert result.exit_code == 0, f'Output:\n{result.output}'
+    assert result.exit_code == 0, f"Output:\n{result.output}"
     # Check if key files/folders were created
-    assert (temp_project_dir / ".venv").exists() or (temp_project_dir / "manage.py").exists()
+    assert (temp_project_dir / ".venv").exists() or (
+        temp_project_dir / "manage.py"
+    ).exists()
     assert (temp_project_dir / "README.md").exists()
     assert (temp_project_dir / "config" / "settings" / "base.py").exists()
     assert (temp_project_dir / "config" / "settings" / "dev.py").exists()
@@ -57,11 +61,11 @@ def test_cli_skip_steps(temp_project_dir, monkeypatch):
         # Only after settings prompt is complete, send app name:
         "users",  # App name
         "2",  # Skip app
-        "2"   # Skip migrations
+        "2",  # Skip migrations
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
-    assert result.exit_code == 0, f'Output:\n{result.output}'
+    assert result.exit_code == 0, f"Output:\n{result.output}"
     # README may not exist if all steps skipped
     # But project should not crash
 
@@ -72,19 +76,21 @@ def test_cli_custom_app_name(temp_project_dir, monkeypatch):
     inputs = [
         "1",  # venv
         "1",  # deps
-        "",   # Django version (default)
+        "",  # Django version (default)
         "1",  # git
         "1",  # django project
         "1",  # settings
         # Only after settings prompt is complete, send app name:
         app_name,  # app name
         "1",  # create app
-        "1"   # migrations
+        "1",  # migrations
     ]
     monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
-    assert result.exit_code == 0, f'Output:\n{result.output}'
-    assert (temp_project_dir / app_name).exists() or (temp_project_dir / f"{app_name}").exists()
+    assert result.exit_code == 0, f"Output:\n{result.output}"
+    assert (temp_project_dir / app_name).exists() or (
+        temp_project_dir / f"{app_name}"
+    ).exists()
 
 
 def test_cli_mcp_json_output(temp_project_dir):
@@ -114,6 +120,7 @@ def test_cli_mcp_json_output(temp_project_dir):
         ],
     )
     assert result.exit_code == 0, f"Output:\n{result.output}"
-    json_lines = [json.loads(l) for l in result.output.splitlines() if l.startswith("{")]
+    lines = result.output.splitlines()
+    json_lines = [json.loads(line) for line in lines if line.startswith("{")]
     events = [j.get("event") for j in json_lines]
     assert "done" in events
