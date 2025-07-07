@@ -7,6 +7,8 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
+import init_django.cli_common as cli_common
+from init_django import cli_mcp
 from init_django.cli_mcp import main as mcp_main
 from init_django.cli_user import main
 
@@ -124,3 +126,59 @@ def test_cli_mcp_json_output(temp_project_dir):
     json_lines = [json.loads(line) for line in lines if line.startswith("{")]
     events = [j.get("event") for j in json_lines]
     assert "done" in events
+
+
+def test_cli_mcp_full_flow(monkeypatch, tmp_path):
+    runner = CliRunner()
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("DJANGO_SECRET_KEY", "test-key")
+
+    executed = []
+
+    def fake_run(cmd: str, check: bool = True) -> None:
+        executed.append(cmd)
+        if "django-admin startproject" in cmd:
+            (tmp_path / "config").mkdir(exist_ok=True)
+            (tmp_path / "manage.py").write_text("")
+            (tmp_path / "config" / "wsgi.py").write_text("application = None")
+
+    monkeypatch.setattr(cli_common, "run", fake_run)
+    monkeypatch.setattr(cli_mcp, "run", fake_run)
+    result = runner.invoke(
+        mcp_main,
+        [
+            "--json",
+            "--venv",
+            "recreate",
+            "--install-deps",
+            "yes",
+            "--django-version",
+            "5.2.3",
+            "--git-init",
+            "yes",
+            "--project",
+            "yes",
+            "--settings",
+            "yes",
+            "--app-name",
+            "demo",
+            "--app-create",
+            "yes",
+            "--migrate",
+            "yes",
+            "--readme",
+            "yes",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    events = [
+        json.loads(line)["event"]
+        for line in result.output.splitlines()
+        if line.startswith("{")
+    ]
+    assert "virtualenv" in events
+    assert "dependencies" in events
+    assert "git" in events
+    assert "requirements" in events
+    assert "done" in events
+    assert executed
