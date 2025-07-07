@@ -85,3 +85,35 @@ def test_cli_custom_app_name(temp_project_dir, monkeypatch):
     result = runner.invoke(main, input="\n".join(inputs) + "\n")
     assert result.exit_code == 0, f'Output:\n{result.output}'
     assert (temp_project_dir / app_name).exists() or (temp_project_dir / f"{app_name}").exists()
+
+
+def test_cli_mcp_json_output(temp_project_dir):
+    runner = CliRunner()
+    result = runner.invoke(
+        mcp_main,
+        [
+            "--json",
+            "--venv",
+            "skip",
+            "--install-deps",
+            "no",
+            "--git-init",
+            "no",
+            "--project",
+            "no",
+            "--settings",
+            "no",
+            "--app-name",
+            "users",
+            "--app-create",
+            "no",
+            "--migrate",
+            "no",
+            "--readme",
+            "no",
+        ],
+    )
+    assert result.exit_code == 0, f"Output:\n{result.output}"
+    json_lines = [json.loads(l) for l in result.output.splitlines() if l.startswith("{")]
+    events = [j.get("event") for j in json_lines]
+    assert "done" in events
