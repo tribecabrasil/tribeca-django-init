@@ -102,6 +102,11 @@ The Tribeca Django Init CLI is being designed for streamlined use by intelligent
 - Extracted common CLI operations into new helper functions in `cli_common.py`.
 - Updated `cli_user.py` and `cli_mcp.py` to use these helpers for better modularization.
 - Added missing module and fixture docstrings across the project.
+
+## [2025-07-08] Review Document Structure Added
+- Created `review/` folder with a documentation template and yearly subfolders.
+- Established naming convention `YYYY-MM-DD-descricao-curta.md` for review files.
+- Updated README to mention the new folder.
 ```
 
 ## References
