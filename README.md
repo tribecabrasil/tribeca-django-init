@@ -87,6 +87,8 @@ pre-commit run --all-files
 
 The hooks will format and lint your code automatically before each commit.
 These style checks also run in the CI workflow to keep contributions consistent.
+The setup also checks if `review/indexReview.md` was modified. Always registre
+suas revisões no topo desse arquivo antes de commitar.
 
 ---
 

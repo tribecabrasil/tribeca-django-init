@@ -14,4 +14,5 @@ Utilize o modelo de tabela abaixo e adicione novas linhas **acima** das existent
 
 | Data | Problema | Solução | Takeaway | Link |
 | ---- | -------- | --------- | -------- | ---- |
+| 2025-07-08 | Checagem automática do índice | Script `check_review_index` no pre-commit | Lembrar de atualizar sempre | Este commit |
 | 2025-07-09 | Processo de revisão criado | Adicionada tabela em `indexReview.md` | Manter revisões sempre atualizadas antes dos commits | Este arquivo |

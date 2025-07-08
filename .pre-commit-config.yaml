@@ -18,6 +18,11 @@ repos:
         args: ["--ignore-missing-imports"]
   - repo: local
     hooks:
+      - id: check-review-index
+        name: review index updated
+        entry: python scripts/check_review_index.py
+        language: system
+        pass_filenames: false
       - id: pytest
         name: pytest (smoke)
         entry: pytest
