@@ -41,4 +41,3 @@ logs/
 # Shell script files
 *.sh
 !cleanup.sh
-!cleanup.sh
