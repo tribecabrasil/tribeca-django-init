@@ -87,8 +87,8 @@ pre-commit run --all-files
 
 The hooks will format and lint your code automatically before each commit.
 These style checks also run in the CI workflow to keep contributions consistent.
-The setup also checks if `review/indexReview.md` was modified. Always registre
-suas revisões no topo desse arquivo antes de commitar.
+The setup also checks if [review/indexReview.md](review/indexReview.md) was modified.
+Always registre suas revisões no topo desse arquivo antes de commitar.
 
 ---
 
@@ -193,7 +193,8 @@ Support and compatibility with MCPs is already under active planning. See detail
 - [AGENTS.md](AGENTS.md): standards & automation for humans and AI
 - [docs/unified_dev_ops_guide.md](docs/unified_dev_ops_guide.md): unified development & operations guide
 - [docs/](init_django/templates/docs/): API, architecture, and models templates
-- [review/](review/): arquivos de revisão usando o padrão `YYYY-MM-DD-descricao-curta.md`
+- [review/](review/): arquivos de revisão no padrão `YYYY-MM-DD-descricao-curta.md`.
+  Consulte o índice rápido em [review/indexReview.md](review/indexReview.md).
 
 ---
 
