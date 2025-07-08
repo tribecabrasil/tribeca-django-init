@@ -25,7 +25,7 @@ declare -a patterns=(
 )
 
 for p in "${patterns[@]}"; do
-  rm -rf $p 2>/dev/null || true
+  rm -rf "$p" 2>/dev/null || true
 done
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Temporary build, test, and crawl artifacts cleaned."
