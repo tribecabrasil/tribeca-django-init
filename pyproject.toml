@@ -13,3 +13,6 @@ post-install = "scripts/post_install.py"
 
 [tool.flake8]
 max-line-length = 88
+
+[tool.isort]
+profile = "black"

@@ -190,6 +190,10 @@ def test_cli_requires_dependencies_mcp(temp_project_dir):
     assert result.exit_code != 0
     lines = result.output.splitlines()
     json_lines = [json.loads(line) for line in lines if line.startswith("{")]
-    project_errors = [j for j in json_lines if j.get("event") == "project" and j.get("status") == "error"]
+    project_errors = [
+        j
+        for j in json_lines
+        if j.get("event") == "project" and j.get("status") == "error"
+    ]
     assert project_errors
     assert "Install dependencies first" in project_errors[0]["message"]

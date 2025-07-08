@@ -12,8 +12,8 @@ from init_django.cli_common import (
     TEMPLATES_DIR,
     apply_migrations,
     create_app,
-    create_readme,
     create_env_file,
+    create_readme,
     create_settings_package,
     create_virtualenv,
     initialize_git,
@@ -174,8 +174,14 @@ def main() -> None:
             if (base / ".env").exists():
                 click.echo(".env already exists.")
             else:
+                env_prompt = (
+                    "8️⃣  Create .env from .env.example?\n"
+                    "1️⃣  Create file\n"
+                    "2️⃣  Skip this step\n"
+                    "Enter your choice:"
+                )
                 env_choice = click.prompt(
-                    "8️⃣  Create .env from .env.example?\n1️⃣  Create file\n2️⃣  Skip this step\nEnter your choice:",
+                    env_prompt,
                     type=click.Choice(["1", "2"]),
                     default="1",
                 )

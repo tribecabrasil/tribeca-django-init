@@ -132,10 +132,7 @@ def start_django_project(venv_path: Path, base: Path, json_mode: bool = False) -
 
     django_admin = venv_path / "bin" / "django-admin"
     if not django_admin.exists():
-        msg = (
-            f"django-admin not found in {venv_path}. "
-            "Install dependencies first."
-        )
+        msg = f"django-admin not found in {venv_path}. " "Install dependencies first."
         if json_mode:
             emit_json_event(
                 "project",
