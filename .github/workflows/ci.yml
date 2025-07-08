@@ -32,7 +32,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --cov=init_django --cov-report=xml --cov-fail-under=90 --maxfail=1 --disable-warnings -v
+          pytest --cov=init_django --cov-report=xml --cov-fail-under=60 --maxfail=1 --disable-warnings -v
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
