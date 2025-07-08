@@ -191,6 +191,7 @@ Support and compatibility with MCPs is already under active planning. See detail
 - [AGENTS.md](AGENTS.md): standards & automation for humans and AI
 - [docs/unified_dev_ops_guide.md](docs/unified_dev_ops_guide.md): unified development & operations guide
 - [docs/](init_django/templates/docs/): API, architecture, and models templates
+- [review/](review/): arquivos de revisão usando o padrão `YYYY-MM-DD-descricao-curta.md`
 
 ---
 
