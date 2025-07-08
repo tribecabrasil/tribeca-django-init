@@ -107,6 +107,10 @@ The Tribeca Django Init CLI is being designed for streamlined use by intelligent
 - Created `review/` folder with a documentation template and yearly subfolders.
 - Established naming convention `YYYY-MM-DD-descricao-curta.md` for review files.
 - Updated README to mention the new folder.
+
+## [2025-07-09] Review Index Introduced
+- Added `review/indexReview.md` com orientações resumidas para registrar problemas e soluções.
+- Contribuidores devem atualizar este índice antes de commits relevantes, sempre inserindo novas entradas no topo.
 ```
 
 ## References
